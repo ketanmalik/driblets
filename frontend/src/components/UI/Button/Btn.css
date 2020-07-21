@@ -1,0 +1,9 @@
+.ui.primary.button {
+  background-color: #133d4d !important;
+  border-radius: 20px;
+}
+
+.ui.primary.button:hover,
+.ui.primary.button:active {
+  background-color: #0e2d39 !important;
+}

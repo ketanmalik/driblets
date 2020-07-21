@@ -1,0 +1,45 @@
+.user-toolbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2rem;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  background-color: #e0e1e2;
+}
+
+.user-toolbar__item ul {
+  display: flex;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+.user-toolbar__item li {
+  margin: 0 1.5rem;
+}
+
+.ui.basic.button.sign-up__btn,
+.ui.basic.button.login__btn {
+  margin: 0;
+  box-shadow: none;
+}
+
+.ui.basic.button.sign-up__btn:hover,
+.ui.basic.button.sign-up__btn:active,
+.ui.basic.button.login__btn:hover,
+.ui.basic.button.login__btn:active {
+  box-shadow: none;
+  background: #b3512c !important;
+  color: #fff !important;
+}
+
+.ui.basic.button.sign-up__btn:focus,
+.ui.basic.button.login__btn:focus {
+  outline: none;
+  /* background: #e0e1e2 !important; */
+  box-shadow: none;
+}
