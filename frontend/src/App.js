@@ -14,7 +14,7 @@ function App() {
         <Header />
         <div className="main-wrapper">
           <Switch>
-            <Route to="/" component={Home} />
+            <Route to="/" exact component={Home} />
           </Switch>
           <Footer />
         </div>

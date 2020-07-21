@@ -3,9 +3,6 @@
   top: 2rem;
   left: 0;
   width: 100%;
-  /* display: flex;
-  justify-content: flex-end;
-  align-items: center; */
   background-color: #fff;
   height: 6rem;
 }
@@ -26,36 +23,15 @@
   height: inherit;
 }
 
-.header-navbar__item ul {
-  display: flex;
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-}
-
-.header-navbar__item li {
-  margin: 0 1.5rem;
-}
-
-.header-navbar__item a {
-  color: #000;
-  font-size: 1.2rem;
-  font-weight: 700;
-}
-
-.header-navbar__item a:hover,
-.header-navbar__item a:active {
-  color: #b3512c;
-  border: none;
-}
-
-.header-navbar__item a:focus {
-  outline: none;
-}
-
 .ui.image.logo {
   width: 100px;
   height: auto;
   margin: 0;
   padding: 0;
+}
+
+@media (max-width: 767px) {
+  .desktop-only {
+    display: none;
+  }
 }
