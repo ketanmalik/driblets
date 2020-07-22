@@ -18,9 +18,6 @@
   margin: 0;
   padding: 0;
 }
-.user-toolbar__item li {
-  margin: 0 1.5rem;
-}
 
 .ui.basic.button.sign-up__btn,
 .ui.basic.button.login__btn {
@@ -40,6 +37,5 @@
 .ui.basic.button.sign-up__btn:focus,
 .ui.basic.button.login__btn:focus {
   outline: none;
-  /* background: #e0e1e2 !important; */
   box-shadow: none;
 }
