@@ -1,0 +1,19 @@
+.dyp-wrapper {
+  width: 90%;
+  margin: 5%;
+  padding-top: 2rem;
+  z-index: 100;
+}
+
+.dyp-tabs .ui.tabular.menu .item {
+  font-size: large;
+  font-weight: 700;
+}
+
+.dyp-tabs .ui.tabular.menu .item:hover {
+  color: #b3512c;
+}
+
+.dyp-tabs .ui.tabular.menu .active.item {
+  color: #133d4d;
+}

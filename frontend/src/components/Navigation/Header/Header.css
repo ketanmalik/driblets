@@ -5,6 +5,8 @@
   width: 100%;
   background-color: #fff;
   height: 6rem;
+  box-shadow: 0px 2px 1px rgba(0, 0, 0, 0.16);
+  z-index: 200;
 }
 
 .header-navbar__logo {
