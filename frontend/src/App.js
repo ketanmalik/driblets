@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
+import DoYourPart from "./components/DoYourPart/DoYourPart";
 import Footer from "./components/Navigation/Footer/Footer";
 import Header from "./components/Navigation/Header/Header";
 import Home from "./components/Home/Home";
@@ -14,7 +15,8 @@ function App() {
         <Header />
         <div className="main-wrapper">
           <Switch>
-            <Route to="/" exact component={Home} />
+            <Route path="/" exact component={Home} />
+            <Route path="/doyourpart" exact component={DoYourPart} />
           </Switch>
           <Footer />
         </div>
