@@ -9,20 +9,55 @@ class WebMap extends Component {
   }
 
   componentDidMount() {
-    loadModules(["esri/Map", "esri/views/MapView"], { css: true }).then(
-      ([ArcGISMap, MapView]) => {
-        const map = new ArcGISMap({
-          basemap: "topo-vector",
+    loadModules(
+      [
+        "esri/WebMap",
+        "esri/views/MapView",
+        "esri/widgets/Search",
+        "esri/widgets/Editor",
+      ],
+      { css: true }
+    ).then(([WebMap, MapView, Search, Editor]) => {
+      const webmap = new WebMap({
+        portalItem: {
+          id: "097f6aad63e04f56a6918e71b7b043e0",
+        },
+      });
+
+      this.view = new MapView({
+        container: this.mapRef.current,
+        map: webmap,
+      });
+
+      this.view.when(() => {
+        console.log("view loaded");
+
+        this.view.popup.autoOpenEnabled = false;
+
+        let searchWidget = new Search({
+          view: this.view,
+          locationEnabled: false,
+          // disabled: true,
         });
 
-        this.view = new MapView({
-          container: this.mapRef.current,
-          map: map,
-          center: [-118, 34],
-          zoom: 8,
+        this.view.ui.add(searchWidget, {
+          position: "top-right",
         });
-      }
-    );
+
+        let editor = new Editor({
+          view: this.view,
+          allowedWorkflows: ["create"],
+        });
+
+        this.view.ui.add(editor, {
+          position: "top-right",
+        });
+
+        searchWidget.on("select-result", function (event) {
+          console.log("event: ", event);
+        });
+      });
+    });
   }
 
   componentWillUnmount() {

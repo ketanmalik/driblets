@@ -10,6 +10,7 @@
   justify-content: flex-end;
   align-items: center;
   background-color: #e0e1e2;
+  z-index: 200;
 }
 
 .user-toolbar__item ul {

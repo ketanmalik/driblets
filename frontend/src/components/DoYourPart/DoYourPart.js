@@ -1,61 +1,46 @@
 import React, { Component } from "react";
-import { Label, Menu, Tab } from "semantic-ui-react";
+import { Breadcrumb } from "semantic-ui-react";
 import WebMap from "../UI/WebMap/WebMap";
 import "./DoYourPart.css";
 
 class DoYourPart extends Component {
   state = {
-    activeIndex: 0,
-    disableConfirmationTab: false,
-    disableEnterDetailsTab: true,
+    currentActiveTab: "location",
   };
 
   render() {
-    const panes = [
+    const sections = [
       {
-        menuItem: <Menu.Item>Find Location</Menu.Item>,
-        pane: {
-          key: "tab1",
-          content: "This tab has center-aligned text",
-          size: "massive",
-        },
+        key: "findLocation",
+        active: this.state.currentActiveTab === "location",
+        content: "Find Location",
+        link: false,
       },
       {
-        menuItem: (
-          <Menu.Item disabled={this.state.disableEnterDetailsTab}>
-            Enter Details
-          </Menu.Item>
-        ),
-        pane: {
-          key: "tab2",
-          content: "This tab has center-aligned text",
-          textAlign: "center",
-        },
+        key: "enterDetails",
+        active: this.state.currentActiveTab === "details",
+        content: "Enter Details",
+        link: false,
       },
       {
-        menuItem: (
-          <Menu.Item disabled={this.state.disableConfirmationTab}>
-            Confirmation
-          </Menu.Item>
-        ),
-        pane: {
-          key: "tab3",
-          content: (
-            <div>
-              This tab contains a <Label>JSX</Label> element
-            </div>
-          ),
-        },
+        key: "confirmation",
+        active: this.state.currentActiveTab === "confirmation",
+        content: "Confirmation",
+        link: false,
       },
     ];
+
+    let currentDisplay = <WebMap />;
+
+    if (this.state.currentActiveTab === "details") {
+    }
+    if (this.state.currentActiveTab === "confirmation") {
+    }
+
     return (
       <div className="dyp-wrapper">
-        <Tab
-          // activeIndex={this.state.activeIndex}
-          className="dyp-tabs"
-          panes={panes}
-          renderActiveOnly={false}
-        />
+        <Breadcrumb icon="right angle" sections={sections} />
+        {currentDisplay}
       </div>
     );
   }
