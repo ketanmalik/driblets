@@ -11,16 +11,22 @@ class WebMap extends Component {
   componentDidMount() {
     loadModules(
       [
+        "esri/tasks/Locator",
         "esri/WebMap",
         "esri/views/MapView",
         "esri/widgets/Search",
         "esri/widgets/Editor",
       ],
       { css: true }
-    ).then(([WebMap, MapView, Search, Editor]) => {
+    ).then(([Locator, WebMap, MapView, Search, Editor]) => {
+      var locatorTask = new Locator({
+        url:
+          "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer",
+      });
+
       const webmap = new WebMap({
         portalItem: {
-          id: "097f6aad63e04f56a6918e71b7b043e0",
+          id: "c86a00fda2a64e569bb9a0e3df535442",
         },
       });
 
@@ -30,9 +36,7 @@ class WebMap extends Component {
       });
 
       this.view.when(() => {
-        console.log("view loaded");
-
-        this.view.popup.autoOpenEnabled = false;
+        // this.view.popup.autoOpenEnabled = false;
 
         let searchWidget = new Search({
           view: this.view,
@@ -47,7 +51,10 @@ class WebMap extends Component {
         let editor = new Editor({
           view: this.view,
           allowedWorkflows: ["create"],
+          _handleSave: (e) => this.addHandler(e),
         });
+
+        console.log(editor, this.view);
 
         this.view.ui.add(editor, {
           position: "top-right",
@@ -56,9 +63,34 @@ class WebMap extends Component {
         searchWidget.on("select-result", function (event) {
           console.log("event: ", event);
         });
+
+        this.view.on("click", function (event) {
+          // event is the event handle returned after the event fires.
+          var lat = Math.round(event.mapPoint.latitude * 1000) / 1000;
+          var lon = Math.round(event.mapPoint.longitude * 1000) / 1000;
+
+          var params = {
+            location: event.mapPoint,
+          };
+
+          locatorTask
+            .locationToAddress(params)
+            .then(function (response) {
+              // If an address is successfully found, show it in the popup's content
+              console.log(response);
+            })
+            .catch(function (error) {
+              // If the promise fails and no result is found, show a generic message
+              console.log("No address was found for this location");
+            });
+        });
       });
     });
   }
+
+  addHandler = (event) => {
+    console.log(event);
+  };
 
   componentWillUnmount() {
     if (this.view) {
