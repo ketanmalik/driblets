@@ -34,6 +34,7 @@ class DoYourPart extends Component {
 
     if (this.state.currentActiveTab === "details") {
     }
+
     if (this.state.currentActiveTab === "confirmation") {
     }
 

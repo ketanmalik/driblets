@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { loadModules } from "esri-loader";
+import { connect } from "react-redux";
+import * as actions from "../../../store/actions/index";
 import "./WebMap.css";
 
 class WebMap extends Component {
@@ -51,10 +53,8 @@ class WebMap extends Component {
         let editor = new Editor({
           view: this.view,
           allowedWorkflows: ["create"],
-          _handleSave: (e) => this.addHandler(e),
+          _handleSave: (e) => this.addFeature(e),
         });
-
-        console.log(editor, this.view);
 
         this.view.ui.add(editor, {
           position: "top-right",
@@ -88,7 +88,7 @@ class WebMap extends Component {
     });
   }
 
-  addHandler = (event) => {
+  addFeature = (event) => {
     console.log(event);
   };
 
@@ -103,4 +103,16 @@ class WebMap extends Component {
   }
 }
 
-export default WebMap;
+const mapStateToProps = (state) => {
+  return {
+    report: state.report,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onReportAdded: (report) => dispatch(actions.addReport(report)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(WebMap);
