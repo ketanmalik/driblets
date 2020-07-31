@@ -3,17 +3,37 @@
   margin: 5%;
   padding-top: 2rem;
   z-index: 100;
+  text-align: center;
 }
 
-.dyp-tabs .ui.tabular.menu .item {
+.dyp-wrapper .ui.breadcrumb {
+  margin-bottom: 2rem;
+}
+
+.dyp-wrapper .ui.breadcrumb .section {
   font-size: large;
-  font-weight: 700;
 }
 
-.dyp-tabs .ui.tabular.menu .item:hover {
-  color: #b3512c;
+.dyp-wrapper .ui.breadcrumb .active.section {
+  background: #133d4d;
+  color: #fff;
+  border-radius: 10px;
+  padding: 10px;
 }
 
-.dyp-tabs .ui.tabular.menu .active.item {
-  color: #133d4d;
+@media (min-width: 361px) and (max-width: 500px) {
+  .dyp-wrapper .ui.breadcrumb .section {
+    font-size: 15px;
+  }
+}
+
+@media (min-width: 325px) and (max-width: 360px) {
+  .dyp-wrapper .ui.breadcrumb .section {
+    font-size: 13px;
+  }
+}
+@media (max-width: 324px) {
+  .dyp-wrapper .ui.breadcrumb .section {
+    font-size: 12px;
+  }
 }
