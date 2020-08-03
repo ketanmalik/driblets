@@ -52,8 +52,8 @@ class WebMap extends Component {
 
         let editor = new Editor({
           view: this.view,
-          allowedWorkflows: ["create"],
-          _handleSave: (e) => this.addFeature(e),
+          // allowedWorkflows: ["create"],
+          // _handleSave: (e) => this.addFeature(e),
         });
 
         this.view.ui.add(editor, {
