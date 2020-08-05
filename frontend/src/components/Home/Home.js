@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import Btn from "../UI/Button/Btn";
+import HowItWorks from "./HowItWorks/HowItWorks";
 import Jumbotron from "../UI/Jumbotron/Jumbotron";
+import OpenIssues from "./OpenIssues/OpenIssues";
 import "./Home.css";
 
 class Home extends Component {
@@ -20,6 +22,8 @@ class Home extends Component {
             <Btn type="primary" text="Do your part" width="15rem" />
           </div>
         </Jumbotron>
+        <HowItWorks />
+        <OpenIssues />
       </div>
     );
   }
