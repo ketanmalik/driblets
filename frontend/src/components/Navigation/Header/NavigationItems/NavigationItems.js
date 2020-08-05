@@ -14,9 +14,6 @@ const navigationItems = (props) => {
         <NavLink to="/about">ABOUT</NavLink>
       </li>
       <li>
-        <NavLink to="/howitworks">HOW IT WORKS</NavLink>
-      </li>
-      <li>
         <NavLink to="/doyourpart">DO YOUR PART</NavLink>
       </li>
     </ul>

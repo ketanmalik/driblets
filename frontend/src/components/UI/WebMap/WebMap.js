@@ -11,6 +11,7 @@ class WebMap extends Component {
   }
 
   componentDidMount() {
+    console.log("props: ", this.props);
     loadModules(
       [
         "esri/tasks/Locator",
@@ -37,54 +38,56 @@ class WebMap extends Component {
         map: webmap,
       });
 
-      this.view.when(() => {
-        // this.view.popup.autoOpenEnabled = false;
+      if (this.props.mode !== "home") {
+        this.view.when(() => {
+          // this.view.popup.autoOpenEnabled = false;
 
-        let searchWidget = new Search({
-          view: this.view,
-          locationEnabled: false,
-          // disabled: true,
+          let searchWidget = new Search({
+            view: this.view,
+            locationEnabled: false,
+            // disabled: true,
+          });
+
+          this.view.ui.add(searchWidget, {
+            position: "top-right",
+          });
+
+          let editor = new Editor({
+            view: this.view,
+            // allowedWorkflows: ["create"],
+            // _handleSave: (e) => this.addFeature(e),
+          });
+
+          this.view.ui.add(editor, {
+            position: "top-right",
+          });
+
+          searchWidget.on("select-result", function (event) {
+            console.log("event: ", event);
+          });
+
+          this.view.on("click", function (event) {
+            // event is the event handle returned after the event fires.
+            var lat = Math.round(event.mapPoint.latitude * 1000) / 1000;
+            var lon = Math.round(event.mapPoint.longitude * 1000) / 1000;
+
+            var params = {
+              location: event.mapPoint,
+            };
+
+            locatorTask
+              .locationToAddress(params)
+              .then(function (response) {
+                // If an address is successfully found, show it in the popup's content
+                console.log(response);
+              })
+              .catch(function (error) {
+                // If the promise fails and no result is found, show a generic message
+                console.log("No address was found for this location");
+              });
+          });
         });
-
-        this.view.ui.add(searchWidget, {
-          position: "top-right",
-        });
-
-        let editor = new Editor({
-          view: this.view,
-          // allowedWorkflows: ["create"],
-          // _handleSave: (e) => this.addFeature(e),
-        });
-
-        this.view.ui.add(editor, {
-          position: "top-right",
-        });
-
-        searchWidget.on("select-result", function (event) {
-          console.log("event: ", event);
-        });
-
-        this.view.on("click", function (event) {
-          // event is the event handle returned after the event fires.
-          var lat = Math.round(event.mapPoint.latitude * 1000) / 1000;
-          var lon = Math.round(event.mapPoint.longitude * 1000) / 1000;
-
-          var params = {
-            location: event.mapPoint,
-          };
-
-          locatorTask
-            .locationToAddress(params)
-            .then(function (response) {
-              // If an address is successfully found, show it in the popup's content
-              console.log(response);
-            })
-            .catch(function (error) {
-              // If the promise fails and no result is found, show a generic message
-              console.log("No address was found for this location");
-            });
-        });
-      });
+      }
     });
   }
 
