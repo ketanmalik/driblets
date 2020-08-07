@@ -1,0 +1,20 @@
+.statistics-wrapper-visible,
+.statistics-wrapper-hidden {
+  display: flex;
+  text-align: center;
+  transition: transform 800ms ease-out;
+  opacity: 0;
+}
+
+.statistics-wrapper-visible {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+@media (max-width: 1020px) {
+  .statistics-wrapper-visible,
+  .statistics-wrapper-hidden {
+    flex-flow: column;
+    margin-bottom: 2rem;
+  }
+}

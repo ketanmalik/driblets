@@ -5,7 +5,11 @@ import "./Btn.css";
 const btn = (props) => {
   let type = props.type ? props.type : "primary";
   return (
-    <Button className={type} style={{ width: props.width }}>
+    <Button
+      onClick={props.clicked}
+      className={type}
+      style={{ width: props.width }}
+    >
       {props.text}
     </Button>
   );
