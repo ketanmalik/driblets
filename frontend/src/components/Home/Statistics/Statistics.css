@@ -2,13 +2,11 @@
 .statistics-wrapper-hidden {
   display: flex;
   text-align: center;
-  transition: transform 800ms ease-out;
-  opacity: 0;
 }
 
 .statistics-wrapper-visible {
-  opacity: 1;
-  transform: scale(1.1);
+  animation: scale-in-out 1s 1;
+  transition: transform 500ms ease-out;
 }
 
 @media (max-width: 1020px) {
