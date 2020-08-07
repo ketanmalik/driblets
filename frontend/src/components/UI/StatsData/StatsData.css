@@ -1,0 +1,24 @@
+.statsData-wrapper {
+  flex: 1 1 auto;
+  margin-bottom: 4rem;
+}
+
+.statsData-wrapper h1 {
+  color: #257ac0;
+  font-size: 4rem;
+  margin: 2rem 0;
+}
+
+.statsData-wrapper p {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+@media (max-width: 1020px) {
+  .statsData-wrapper {
+    margin: 3rem;
+  }
+  .statsData-wrapper h1 {
+    margin: 1rem;
+  }
+}

@@ -11,7 +11,6 @@ class WebMap extends Component {
   }
 
   componentDidMount() {
-    console.log("props: ", this.props);
     loadModules(
       [
         "esri/tasks/Locator",
@@ -19,9 +18,10 @@ class WebMap extends Component {
         "esri/views/MapView",
         "esri/widgets/Search",
         "esri/widgets/Editor",
+        "esri/widgets/Expand",
       ],
       { css: true }
-    ).then(([Locator, WebMap, MapView, Search, Editor]) => {
+    ).then(([Locator, WebMap, MapView, Search, Editor, Expand]) => {
       var locatorTask = new Locator({
         url:
           "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer",
@@ -54,11 +54,17 @@ class WebMap extends Component {
 
           let editor = new Editor({
             view: this.view,
-            // allowedWorkflows: ["create"],
+            allowedWorkflows: ["create"],
             // _handleSave: (e) => this.addFeature(e),
           });
 
-          this.view.ui.add(editor, {
+          var expand = new Expand({
+            expandIconClass: "esri-icon-edit",
+            view: this.view,
+            content: editor,
+          });
+
+          this.view.ui.add(expand, {
             position: "top-right",
           });
 

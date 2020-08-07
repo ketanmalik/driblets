@@ -6,7 +6,7 @@ const openIssues = (props) => {
   return (
     <div className="oi-wrapper">
       <div className="oi-heading">
-        <h1>Open Issues</h1>
+        <h1>Current Water Leakages</h1>
       </div>
       <div className="oi-map">
         <WebMap mode="home" />

@@ -1,11 +1,15 @@
 import React, { Component } from "react";
 import Btn from "../UI/Button/Btn";
-import HowItWorks from "./HowItWorks/HowItWorks";
+import HowWeWork from "./HowWeWork/HowWeWork";
 import Jumbotron from "../UI/Jumbotron/Jumbotron";
 import OpenIssues from "./OpenIssues/OpenIssues";
+import Statistics from "./Statistics/Statistics";
 import "./Home.css";
 
 class Home extends Component {
+  dypBtnHandler = () => {
+    this.props.history.push("doyourpart");
+  };
   render() {
     return (
       <div className="home-wrapper">
@@ -19,11 +23,17 @@ class Home extends Component {
               We're putting our constant efforts to combat water wastage and
               water scarcity. Your contribution matters!
             </p>
-            <Btn type="primary" text="Do your part" width="15rem" />
+            <Btn
+              clicked={this.dypBtnHandler}
+              type="primary"
+              text="Do your part"
+              width="15rem"
+            />
           </div>
         </Jumbotron>
-        <HowItWorks />
+        <HowWeWork />
         <OpenIssues />
+        <Statistics />
       </div>
     );
   }
