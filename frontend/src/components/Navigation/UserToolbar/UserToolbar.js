@@ -1,26 +1,44 @@
-import React from "react";
+import React, { Component } from "react";
 import { Button } from "semantic-ui-react";
+import { connect } from "react-redux";
+import * as actions from "../../../store/actions/index";
+import AuthUserModal from "../../AuthUserModal/AuthUserModal";
 import "./UserToolbar.css";
 
-const userToolbar = (props) => {
-  return (
-    <div className="user-toolbar">
-      <nav className="user-toolbar__item">
-        <ul>
-          <li>
-            <Button basic className="sign-up__btn">
-              Sign up
-            </Button>
-          </li>
-          <li>
-            <Button basic className="login__btn">
-              Login
-            </Button>
-          </li>
-        </ul>
-      </nav>
-    </div>
-  );
+class UserToolbar extends Component {
+  render() {
+    return (
+      <div className="user-toolbar">
+        {this.props.showAuthUserModal && <AuthUserModal />}
+        <nav className="user-toolbar__item">
+          <ul>
+            <li>
+              <Button
+                basic
+                className="sign-up__btn"
+                onClick={this.props.onAuthUserHandler}
+              >
+                Sign up / Login
+              </Button>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    );
+  }
+}
+
+const mapStateToProps = (state) => {
+  return {
+    showAuthUserModal: state.auth.showAuthUserModal,
+    user: state.auth.user,
+  };
 };
 
-export default userToolbar;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onAuthUserHandler: () => dispatch(actions.authUserModalHandler()),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(UserToolbar);
