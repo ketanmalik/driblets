@@ -1,52 +1,53 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Button, Form } from "semantic-ui-react";
+import {
+  Button,
+  Divider,
+  Grid,
+  Header,
+  Icon,
+  Segment,
+  Form,
+  Input,
+} from "semantic-ui-react";
 import * as actions from "../../store/actions/index";
 import Backdrop from "../UI/Backdrop/Backdrop";
+import SignIn from "./SignIn/SignIn";
+import SignUp from "./SignUp/SignUp";
 import "./AuthUserModal.css";
 
 const authUserModal = (props) => {
   return (
-    // <div className="modal-wrapper" onClick={props.onCloseModalHandler}>
-    <div>
+    <React.Fragment>
       <Backdrop
         show={props.showAuthUserModal}
         clicked={props.onCloseModalHandler}
       />
-      <div className="modal">
-        <div className="modal-header">
-          <h3 id="modal-header__login">Log In</h3>
-          <p>
-            New User?
-            <Button
-              basic
-              className="modal-sign-up__btn"
-              //   onClick={this.props.onAuthUserHandler}
-            >
-              <i>Create an account</i>
-            </Button>
-          </p>
-        </div>
+      <div className={`modal ${props.showAuthUserModal ? `open` : `close`}`}>
         <div className="modal-content">
-          <Form>
-            <Form.Group>
-              <Form.Input
-                label="First name"
-                placeholder="First Name"
-                width={6}
-              />
-              <Form.Input
-                label="Middle Name"
-                placeholder="Middle Name"
-                width={4}
-              />
-              <Form.Input label="Last Name" placeholder="Last Name" width={6} />
-            </Form.Group>
-          </Form>
+          <Segment>
+            <Grid>
+              <Grid.Row>
+                <Grid.Column>
+                  <Header className="modal-content__header">Log In</Header>
+                  <SignIn />
+                </Grid.Column>
+              </Grid.Row>
+              <Divider className="modal-content__desktop-only" horizontal>
+                Or
+              </Divider>
+              <Grid.Row className="modal-content__desktop-only">
+                <Grid.Column>
+                  <Header className="modal-content__header">Sign Up</Header>
+                  <SignUp />
+                </Grid.Column>
+              </Grid.Row>
+            </Grid>
+          </Segment>
         </div>
         <div className="modal-footer"></div>
       </div>
-    </div>
+    </React.Fragment>
   );
 };
 

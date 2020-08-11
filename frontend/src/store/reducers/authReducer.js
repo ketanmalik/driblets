@@ -2,7 +2,7 @@ import * as actionTypes from "../actions/actionTypes";
 import axios from "axios";
 
 const initialState = {
-  showAuthUserModal: false,
+  showAuthUserModal: true,
   user: null,
 };
 
