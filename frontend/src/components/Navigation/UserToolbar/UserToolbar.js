@@ -9,7 +9,8 @@ class UserToolbar extends Component {
   render() {
     return (
       <div className="user-toolbar">
-        <AuthUserModal />
+        {this.props.showAuthUserModal && <AuthUserModal />}
+        {/* <AuthUserModal /> */}
         <nav className="user-toolbar__item">
           <ul>
             <li>

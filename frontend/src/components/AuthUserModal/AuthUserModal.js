@@ -37,7 +37,8 @@ class AuthUserModal extends Component {
           clicked={this.backdropClickHandler}
         />
         <div
-          className={`modal ${this.props.showAuthUserModal ? `open` : `close`}`}
+          className="modal"
+          // className={`modal ${this.props.showAuthUserModal ? `open` : `close`}`}
         >
           <div className="modal-content">
             <Segment>
