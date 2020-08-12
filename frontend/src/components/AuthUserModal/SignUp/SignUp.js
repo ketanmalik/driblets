@@ -1,5 +1,7 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import { Button, Icon, Form, Input } from "semantic-ui-react";
+import * as actions from "../../../store/actions/index";
 import ToastMessage from "../../UI/ToastMessage/ToastMessage";
 import "./SignUp.css";
 
@@ -58,7 +60,6 @@ class SignUp extends Component {
   };
 
   signUpFormSubmithandler = () => {
-    console.log(this.state);
     let { formFields, formError, errors } = this.state;
     formError = false;
     for (const key in formFields) {
@@ -67,12 +68,20 @@ class SignUp extends Component {
         errors[key] = true;
       }
     }
-    this.setState({ formError: formError, errors: errors });
+    this.setState({ formError: formError, errors: errors }, () => {
+      if (!formError) {
+        this.props.onSignUp(this.state.formFields);
+      }
+    });
   };
 
   render() {
     return (
-      <Form onSubmit={this.signUpFormSubmithandler} error>
+      <Form
+        onSubmit={this.signUpFormSubmithandler}
+        error
+        loading={this.props.loading}
+      >
         {this.state.formError && (
           <ToastMessage
             close={this.closeToastHandler}
@@ -146,4 +155,16 @@ class SignUp extends Component {
   }
 }
 
-export default SignUp;
+const mapStateToProps = (state) => {
+  return {
+    loading: state.auth.loading,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onSignUp: (payload) => dispatch(actions.signUpHandler(payload)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignUp);
