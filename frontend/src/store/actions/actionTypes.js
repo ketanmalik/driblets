@@ -1,1 +1,2 @@
 export const ADD_REPORT = "ADD_REPORT";
+export const AUTH_USER_MODAL_HANDLER = "AUTH_USER_MODAL_HANDLER";

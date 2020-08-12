@@ -1,0 +1,149 @@
+.modal {
+  position: fixed;
+  background-color: #fff;
+  border-radius: 20px;
+  /* opacity: 0; */
+  z-index: 200;
+  animation: scale-in-out 500ms 1;
+  /* transition: transform 0.4s ease, opacity 0.4s; */
+  padding: 2rem;
+  width: 50%;
+  left: 25%;
+  top: 10vh;
+}
+
+@media (max-width: 1040px) {
+  .modal {
+    width: 90%;
+    left: 5%;
+  }
+}
+
+@media (min-height: 781px) and (max-height: 870px) {
+  .modal {
+    top: 8vh;
+  }
+}
+
+@media (min-height: 601px) and (max-height: 780px) {
+  .modal {
+    top: 6vh;
+  }
+}
+
+/* .modal.open {
+  opacity: 1;
+}
+
+.modal.close {
+  opacity: 0;
+  transform: scale(0.5);
+} */
+
+.modal-header {
+}
+
+.modal-header h3 {
+  font-size: 2rem;
+}
+
+.modal-header p {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.modal-content {
+}
+
+.modal-footer {
+}
+
+.ui.basic.button.modal-sign-up__btn {
+  border-radius: 0;
+  box-shadow: none;
+  color: #133d4d !important;
+  padding: 8px;
+  font-size: 15px;
+  font-weight: 500;
+}
+.ui.basic.button.modal-sign-up__btn:hover,
+.ui.basic.button.modal-sign-up__btn:active {
+  color: #b3512c !important;
+  box-shadow: none;
+  background: none !important;
+}
+
+.ui.horizontal.divider:after,
+.ui.horizontal.divider:before {
+  top: 0 !important;
+}
+
+.ui.header.modal-content__header {
+  text-align: center;
+  font-size: 1.5rem;
+}
+
+.modal-content .ui.button.modal-content__btn {
+  width: 30%;
+  margin-left: 35%;
+  background-color: #133d4d;
+  color: white;
+}
+
+.modal-content .ui.button.modal-content__btn:hover {
+  background-color: #0e2d39 !important;
+}
+
+.ui.segment {
+  box-shadow: none !important;
+  border: none !important;
+  border-radius: 0 !important;
+}
+
+.modal-content__mobile-only {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.modal-content__mobile-only .ui.button.mobile-only-btn {
+  background: none !important;
+  color: #27a8f3;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding: 0;
+  margin-left: 5px;
+}
+
+.modal-content__mobile-only .ui.button.mobile-only-btn:hover {
+  color: #133d4d;
+}
+
+@media (max-width: 750px) {
+  .modal-content__desktop-only {
+    display: none !important;
+  }
+}
+
+@media (min-width: 750px) {
+  .modal-content__mobile-only {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .modal-content .ui.button.modal-content__btn {
+    width: 50%;
+    margin-left: 25%;
+    margin-top: 2rem;
+  }
+}
+
+@media (max-height: 600px) {
+  .modal {
+    padding: 1rem;
+    top: 4vh;
+  }
+  .modal-content .ui.button.modal-content__btn {
+    margin-top: 1rem;
+  }
+}

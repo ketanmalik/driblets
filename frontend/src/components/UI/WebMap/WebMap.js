@@ -114,7 +114,7 @@ class WebMap extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    report: state.report,
+    report: state.dyp.report,
   };
 };
 
