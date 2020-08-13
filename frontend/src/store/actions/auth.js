@@ -7,6 +7,14 @@ export const authUserModalHandler = () => {
   };
 };
 
+export const resetSignInRespHandler = () => {
+  return { type: actionTypes.RESET_SIGN_IN_RESP };
+};
+
+export const resetSignUpRespHandler = () => {
+  return { type: actionTypes.RESET_SIGN_UP_RESP };
+};
+
 export const signInFailHandler = (err) => {
   return {
     type: actionTypes.SIGN_IN_FAIL,
@@ -17,13 +25,14 @@ export const signInFailHandler = (err) => {
 export const signInHandler = (payload) => {
   return async (dispatch) => {
     dispatch(signInStartHandler());
-    const hashedPassword = await bcrypt.hash(payload.password, 12);
 
     let requestBody = {
       query: `
         query {
           login(email: "${payload.username}", password: "${payload.password}") {
             userId
+            fName
+            lName
           }
         }
       `,
@@ -38,7 +47,7 @@ export const signInHandler = (payload) => {
     })
       .then((res) => {
         if (res.status !== 200 && res.status !== 201) {
-          throw new Error("login failed");
+          throw { error: res.statusText };
         }
         return res.json();
       })
@@ -67,6 +76,7 @@ export const signUpFailHandler = (err) => {
 };
 
 export const signUpHandler = (payload) => {
+  console.log("1. sign-up handler");
   return async (dispatch) => {
     dispatch(signUpStartHandler());
     const hashedPassword = await bcrypt.hash(payload.password, 12);
@@ -100,15 +110,18 @@ export const signUpHandler = (payload) => {
       },
     })
       .then((res) => {
+        console.log("2. sign-up then 1");
         if (res.status !== 200 && res.status !== 201) {
-          throw new Error("failed");
+          throw { error: res.statusText };
         }
         return res.json();
       })
       .then((resData) => {
+        console.log("3. sign-up then 2");
         return dispatch(signUpSuccessHandler(resData));
       })
       .catch((err) => {
+        console.log("4. sign-up error");
         return dispatch(signUpFailHandler(err));
       });
   };
@@ -119,5 +132,6 @@ export const signUpStartHandler = () => {
 };
 
 export const signUpSuccessHandler = (res) => {
+  console.log("1. sign up success handler");
   return { type: actionTypes.SIGN_UP_SUCCESS, res: res };
 };

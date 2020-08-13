@@ -34,6 +34,6 @@ module.exports = {
     if (!isEqual) {
       throw new Error("wrong password");
     }
-    return { userId: user.id };
+    return { userId: user.id, fName: user.fName, lName: user.lName };
   },
 };

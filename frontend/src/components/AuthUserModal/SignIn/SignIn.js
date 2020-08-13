@@ -62,6 +62,24 @@ class SignIn extends Component {
             description="Please fill all the mandatory fileds correctly."
           />
         )}
+        {this.props.signInResp && (
+          <ToastMessage
+            close={this.props.onCloseToastHandler}
+            type={
+              this.props.signInResp.type === "error" ? "negative" : "positive"
+            }
+            title={
+              this.props.signInResp.type === "error"
+                ? "Could not log in"
+                : `Hello ${this.props.signInResp.message.fName}`
+            }
+            description={
+              this.props.signInResp.type === "error"
+                ? "The username or the password you entered doesn't match any account"
+                : `Welcome back to Driblets! Let's save some water today! `
+            }
+          />
+        )}
         <Form.Field error={this.state.errors.username} required>
           <label>Username</label>
           <Input
@@ -100,11 +118,13 @@ class SignIn extends Component {
 const mapStateToProps = (state) => {
   return {
     signInLoading: state.auth.signInLoading,
+    signInResp: state.auth.signInResp,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    onCloseToastHandler: () => dispatch(actions.resetSignInRespHandler()),
     onSignIn: (payload) => dispatch(actions.signInHandler(payload)),
   };
 };
