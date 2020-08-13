@@ -7,6 +7,65 @@ export const authUserModalHandler = () => {
   };
 };
 
+export const signInFailHandler = (err) => {
+  return {
+    type: actionTypes.SIGN_IN_FAIL,
+    err: err,
+  };
+};
+
+export const signInHandler = (payload) => {
+  return async (dispatch) => {
+    dispatch(signInStartHandler());
+    const hashedPassword = await bcrypt.hash(payload.password, 12);
+
+    let requestBody = {
+      query: `
+        query {
+          login(email: "${payload.username}", password: "${payload.password}") {
+            userId
+          }
+        }
+      `,
+    };
+
+    fetch("http://localhost:8080/graphql", {
+      method: "POST",
+      body: JSON.stringify(requestBody),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => {
+        if (res.status !== 200 && res.status !== 201) {
+          throw new Error("login failed");
+        }
+        return res.json();
+      })
+      .then((resData) => {
+        return dispatch(signInSuccessHandler(resData));
+      })
+      .catch((err) => {
+        return dispatch(signInFailHandler(err));
+      });
+  };
+};
+
+export const signInStartHandler = () => {
+  return { type: actionTypes.SIGN_IN_START };
+};
+
+export const signInSuccessHandler = (res) => {
+  return { type: actionTypes.SIGN_IN_SUCCESS, res: res };
+};
+
+export const signUpFailHandler = (err) => {
+  return {
+    type: actionTypes.SIGN_UP_FAIL,
+    err: err,
+  };
+};
+
 export const signUpHandler = (payload) => {
   return async (dispatch) => {
     dispatch(signUpStartHandler());
@@ -52,13 +111,6 @@ export const signUpHandler = (payload) => {
       .catch((err) => {
         return dispatch(signUpFailHandler(err));
       });
-  };
-};
-
-export const signUpFailHandler = (err) => {
-  return {
-    type: actionTypes.SIGN_UP_FAIL,
-    err: err,
   };
 };
 

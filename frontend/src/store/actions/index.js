@@ -1,2 +1,2 @@
 export { addReport } from "./dyp";
-export { authUserModalHandler, signUpHandler } from "./auth";
+export { authUserModalHandler, signInHandler, signUpHandler } from "./auth";

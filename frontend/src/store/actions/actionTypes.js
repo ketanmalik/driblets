@@ -1,6 +1,10 @@
 export const ADD_REPORT = "ADD_REPORT";
 export const AUTH_USER_MODAL_HANDLER = "AUTH_USER_MODAL_HANDLER";
+export const SIGN_IN = "SIGN_IN";
+export const SIGN_IN_FAIL = "SIGN_UP_FAIL";
+export const SIGN_IN_START = "SIGN_IN_START";
+export const SIGN_IN_SUCCESS = "SIGN_UP_SUCCESS";
 export const SIGN_UP = "SIGN_UP";
+export const SIGN_UP_FAIL = "SIGN_UP_FAIL";
 export const SIGN_UP_START = "SIGN_UP_START";
 export const SIGN_UP_SUCCESS = "SIGN_UP_SUCCESS";
-export const SIGN_UP_FAIL = "SIGN_UP_FAIL";
