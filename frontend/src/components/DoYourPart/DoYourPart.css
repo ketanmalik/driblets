@@ -1,6 +1,7 @@
 .dyp-wrapper {
   width: 90%;
   margin: 5%;
+  margin-bottom: 0;
   padding-top: 2rem;
   z-index: 100;
   text-align: center;

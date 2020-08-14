@@ -1,5 +1,5 @@
 const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
+const jwt = require("jsonwebtoken-refresh");
 const User = require("../../models/user");
 
 module.exports = {
@@ -40,6 +40,7 @@ module.exports = {
       "dribletssupersecretkey",
       { expiresIn: "1h" }
     );
+
     return {
       userId: user.id,
       fName: user.fName,

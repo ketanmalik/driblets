@@ -7,6 +7,10 @@ export const authUserModalHandler = () => {
   };
 };
 
+export const logout = () => {
+  return { type: actionTypes.LOGOUT };
+};
+
 export const resetSignInRespHandler = () => {
   return { type: actionTypes.RESET_SIGN_IN_RESP };
 };

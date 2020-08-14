@@ -10,36 +10,68 @@ class UserToolbar extends Component {
   render() {
     return (
       <div className="user-toolbar">
-        {this.props.showAuthUserModal && <AuthUserModal />}
-        {this.props.signInResp && this.props.signInResp.type === "success" && (
-          <ToastMessage
-            close={this.props.onCloseToastHandler}
-            type="positive"
-            title={`Hello ${this.props.signInResp.message.fName}`}
-            description={`Welcome back to Driblets! Let's save some water today! `}
-          />
+        {this.props.user ? (
+          <React.Fragment>
+            {this.props.signInResp &&
+              this.props.signInResp.type === "success" && (
+                <ToastMessage
+                  close={this.props.onCloseToastHandler}
+                  type="positive"
+                  title={`Hello ${this.props.signInResp.message.fName}`}
+                  description={`Welcome back to Driblets! Let's save some water today! `}
+                />
+              )}
+            {this.props.signUpResp &&
+              this.props.signUpResp.type === "success" && (
+                <ToastMessage
+                  close={this.props.onSignUpCloseToastHandler}
+                  type="positive"
+                  title={`Hello ${this.props.signUpResp.message.fName}`}
+                  description={`Welcome to Driblets! Let's save some water today! `}
+                />
+              )}
+
+            <nav className="user-toolbar__item">
+              <ul>
+                <li>
+                  <Button
+                    basic
+                    className="user-toolbar__btn"
+                    // onClick={this.props.onAuthUserHandler}
+                  >
+                    Dashboard
+                  </Button>
+                </li>
+                <li>
+                  <Button
+                    basic
+                    className="user-toolbar__btn"
+                    onClick={this.props.onLogout}
+                  >
+                    Logout
+                  </Button>
+                </li>
+              </ul>
+            </nav>
+          </React.Fragment>
+        ) : (
+          <React.Fragment>
+            {this.props.showAuthUserModal && <AuthUserModal />}
+            <nav className="user-toolbar__item">
+              <ul>
+                <li>
+                  <Button
+                    basic
+                    className="user-toolbar__btn"
+                    onClick={this.props.onAuthUserHandler}
+                  >
+                    Sign up / Login
+                  </Button>
+                </li>
+              </ul>
+            </nav>
+          </React.Fragment>
         )}
-        {this.props.signUpResp && this.props.signUpResp.type === "success" && (
-          <ToastMessage
-            close={this.props.onSignUpCloseToastHandler}
-            type="positive"
-            title={`Hello ${this.props.signUpResp.message.fName}`}
-            description={`Welcome to Driblets! Let's save some water today! `}
-          />
-        )}
-        <nav className="user-toolbar__item">
-          <ul>
-            <li>
-              <Button
-                basic
-                className="sign-up__btn"
-                onClick={this.props.onAuthUserHandler}
-              >
-                Sign up / Login
-              </Button>
-            </li>
-          </ul>
-        </nav>
       </div>
     );
   }
@@ -58,6 +90,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onAuthUserHandler: () => dispatch(actions.authUserModalHandler()),
     onCloseToastHandler: () => dispatch(actions.resetSignInRespHandler()),
+    onLogout: () => dispatch(actions.logout()),
     onSignUpCloseToastHandler: () => dispatch(actions.resetSignUpRespHandler()),
   };
 };
