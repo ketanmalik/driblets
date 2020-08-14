@@ -3,6 +3,7 @@ import { Button } from "semantic-ui-react";
 import { connect } from "react-redux";
 import * as actions from "../../../store/actions/index";
 import AuthUserModal from "../../AuthUserModal/AuthUserModal";
+import ToastMessage from "../../UI/ToastMessage/ToastMessage";
 import "./UserToolbar.css";
 
 class UserToolbar extends Component {
@@ -10,7 +11,22 @@ class UserToolbar extends Component {
     return (
       <div className="user-toolbar">
         {this.props.showAuthUserModal && <AuthUserModal />}
-        {/* <AuthUserModal /> */}
+        {this.props.signInResp && this.props.signInResp.type === "success" && (
+          <ToastMessage
+            close={this.props.onCloseToastHandler}
+            type="positive"
+            title={`Hello ${this.props.signInResp.message.fName}`}
+            description={`Welcome back to Driblets! Let's save some water today! `}
+          />
+        )}
+        {this.props.signUpResp && this.props.signUpResp.type === "success" && (
+          <ToastMessage
+            close={this.props.onSignUpCloseToastHandler}
+            type="positive"
+            title={`Hello ${this.props.signUpResp.message.fName}`}
+            description={`Welcome to Driblets! Let's save some water today! `}
+          />
+        )}
         <nav className="user-toolbar__item">
           <ul>
             <li>
@@ -31,6 +47,8 @@ class UserToolbar extends Component {
 
 const mapStateToProps = (state) => {
   return {
+    signInResp: state.auth.signInResp,
+    signUpResp: state.auth.signUpResp,
     showAuthUserModal: state.auth.showAuthUserModal,
     user: state.auth.user,
   };
@@ -39,6 +57,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     onAuthUserHandler: () => dispatch(actions.authUserModalHandler()),
+    onCloseToastHandler: () => dispatch(actions.resetSignInRespHandler()),
+    onSignUpCloseToastHandler: () => dispatch(actions.resetSignUpRespHandler()),
   };
 };
 

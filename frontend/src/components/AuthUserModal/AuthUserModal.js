@@ -1,15 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import {
-  Button,
-  Divider,
-  Grid,
-  Header,
-  Icon,
-  Segment,
-  Form,
-  Input,
-} from "semantic-ui-react";
+import { Button, Divider, Grid, Header, Segment } from "semantic-ui-react";
 import * as actions from "../../store/actions/index";
 import Backdrop from "../UI/Backdrop/Backdrop";
 import SignIn from "./SignIn/SignIn";

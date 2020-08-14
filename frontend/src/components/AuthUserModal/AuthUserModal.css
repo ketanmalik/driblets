@@ -6,7 +6,7 @@
   z-index: 200;
   animation: scale-in-out 500ms 1;
   /* transition: transform 0.4s ease, opacity 0.4s; */
-  padding: 2rem;
+  padding: 1rem;
   width: 50%;
   left: 25%;
   top: 10vh;

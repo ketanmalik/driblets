@@ -9,6 +9,14 @@ module.exports = buildSchema(`
         password: String!
     }
 
+    type AuthData {
+        userId: ID!
+        fName: String!
+        lName: String!
+        token: String!
+        tokenExpiration: Int!
+    }
+
     type User {
         _id: String!
         address: String!
@@ -20,6 +28,7 @@ module.exports = buildSchema(`
 
 
     type RootQuery {
+        login(email: String!, password: String!): AuthData!
         test: String
         users: [User!]!
     }

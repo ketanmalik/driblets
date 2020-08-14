@@ -1,0 +1,17 @@
+.ui.negative.message.message-wrapper,
+.ui.positive.message.message-wrapper {
+  position: fixed;
+  top: 2rem;
+  animation: slide-message 1s 1 forwards;
+  /* animation-fill-mode: forwards; */
+}
+
+@keyframes slide-message {
+  0% {
+    right: 0rem;
+  }
+
+  100% {
+    right: 2rem;
+  }
+}
