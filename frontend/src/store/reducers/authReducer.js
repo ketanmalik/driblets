@@ -13,6 +13,8 @@ const authReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.AUTH_USER_MODAL_HANDLER:
       return authUserModalHandler(state);
+    case actionTypes.LOGOUT:
+      return { ...state, user: null };
     case actionTypes.RESET_SIGN_IN_RESP:
       return { ...state, signInResp: null };
     case actionTypes.RESET_SIGN_UP_RESP:
@@ -46,6 +48,7 @@ const authUserModalHandler = (state) => {
 const signInSuccesshandler = (state, res) => {
   let signInResp = { ...state.signInResp };
   let showAuthUserModal = { ...state.showAuthUserModal };
+  let user = { ...state.user };
   if (res.errors) {
     signInResp["type"] = "error";
     signInResp["message"] = res.errors[0].message;
@@ -57,13 +60,14 @@ const signInSuccesshandler = (state, res) => {
       lName: res.data.login.lName,
     };
     showAuthUserModal = false;
+    user = res.data.login;
   }
   return {
     ...state,
     signInResp: signInResp,
     signInLoading: false,
     showAuthUserModal: showAuthUserModal,
-    user: res,
+    user: user,
   };
 };
 

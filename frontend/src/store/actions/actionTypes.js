@@ -1,5 +1,6 @@
 export const ADD_REPORT = "ADD_REPORT";
 export const AUTH_USER_MODAL_HANDLER = "AUTH_USER_MODAL_HANDLER";
+export const LOGOUT = "LOGOUT";
 export const RESET_SIGN_IN_RESP = "RESET_SIGN_IN_RESP";
 export const RESET_SIGN_UP_RESP = "RESET_SIGN_UP_RESP";
 export const SIGN_IN = "SIGN_IN";
