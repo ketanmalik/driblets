@@ -44,23 +44,30 @@ const authUserModalHandler = (state) => {
 };
 
 const signInSuccesshandler = (state, res) => {
-  console.log("login success", res);
   let signInResp = { ...state.signInResp };
+  let showAuthUserModal = { ...state.showAuthUserModal };
   if (res.errors) {
     signInResp["type"] = "error";
     signInResp["message"] = res.errors[0].message;
   } else {
+    console.log(res);
     signInResp["type"] = "success";
     signInResp["message"] = {
       fName: res.data.login.fName,
       lName: res.data.login.lName,
     };
+    showAuthUserModal = false;
   }
-  return { ...state, signInResp: signInResp, signInLoading: false, user: res };
+  return {
+    ...state,
+    signInResp: signInResp,
+    signInLoading: false,
+    showAuthUserModal: showAuthUserModal,
+    user: res,
+  };
 };
 
 const signInFailHandler = (state, err) => {
-  console.log("login fail", err);
   let signInResp = { ...state.signInResp };
   signInResp["type"] = "error";
   signInResp["message"] = err.error;
@@ -68,13 +75,34 @@ const signInFailHandler = (state, err) => {
 };
 
 const signUpFailHandler = (state, err) => {
-  console.log("sign up fail", err);
-  return { ...state, loading: false };
+  let signUpResp = { ...state.signUpResp };
+  signUpResp["type"] = "error";
+  signUpResp["message"] =
+    "There's a network error. Please try again after some time.";
+  return { ...state, loading: false, signUpResp: signUpResp };
 };
 
 const signUpSuccessHandler = (state, res) => {
-  console.log("sign up success", res);
-  return { ...state, loading: false };
+  let signUpResp = { ...state.signUpResp };
+  let showAuthUserModal = { ...state.showAuthUserModal };
+  if (res.errors) {
+    signUpResp["type"] = "error";
+    signUpResp["message"] = res.errors[0].message;
+  } else {
+    console.log(res);
+    signUpResp["type"] = "success";
+    signUpResp["message"] = {
+      fName: res.data.createUser.fName,
+      lName: res.data.createUser.lName,
+    };
+    showAuthUserModal = false;
+  }
+  return {
+    ...state,
+    loading: false,
+    signUpResp: signUpResp,
+    showAuthUserModal: showAuthUserModal,
+  };
 };
 
 export default authReducer;

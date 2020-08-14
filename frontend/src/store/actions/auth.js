@@ -33,12 +33,14 @@ export const signInHandler = (payload) => {
             userId
             fName
             lName
+            token
+            tokenExpiration
           }
         }
       `,
     };
 
-    fetch("http://localhost:8080/graphql", {
+    fetch("/graphql", {
       method: "POST",
       body: JSON.stringify(requestBody),
       headers: {
@@ -76,7 +78,6 @@ export const signUpFailHandler = (err) => {
 };
 
 export const signUpHandler = (payload) => {
-  console.log("1. sign-up handler");
   return async (dispatch) => {
     dispatch(signUpStartHandler());
     const hashedPassword = await bcrypt.hash(payload.password, 12);
@@ -102,7 +103,7 @@ export const signUpHandler = (payload) => {
       `,
     };
 
-    fetch("http://localhost:8080/graphql", {
+    fetch("/graphql", {
       method: "POST",
       body: JSON.stringify(requestBody),
       headers: {
@@ -110,18 +111,15 @@ export const signUpHandler = (payload) => {
       },
     })
       .then((res) => {
-        console.log("2. sign-up then 1");
         if (res.status !== 200 && res.status !== 201) {
           throw { error: res.statusText };
         }
         return res.json();
       })
       .then((resData) => {
-        console.log("3. sign-up then 2");
         return dispatch(signUpSuccessHandler(resData));
       })
       .catch((err) => {
-        console.log("4. sign-up error");
         return dispatch(signUpFailHandler(err));
       });
   };
@@ -132,6 +130,5 @@ export const signUpStartHandler = () => {
 };
 
 export const signUpSuccessHandler = (res) => {
-  console.log("1. sign up success handler");
   return { type: actionTypes.SIGN_UP_SUCCESS, res: res };
 };

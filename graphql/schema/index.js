@@ -13,6 +13,8 @@ module.exports = buildSchema(`
         userId: ID!
         fName: String!
         lName: String!
+        token: String!
+        tokenExpiration: Int!
     }
 
     type User {

@@ -62,22 +62,12 @@ class SignIn extends Component {
             description="Please fill all the mandatory fileds correctly."
           />
         )}
-        {this.props.signInResp && (
+        {this.props.signInResp && this.props.signInResp.type === "error" && (
           <ToastMessage
             close={this.props.onCloseToastHandler}
-            type={
-              this.props.signInResp.type === "error" ? "negative" : "positive"
-            }
-            title={
-              this.props.signInResp.type === "error"
-                ? "Could not log in"
-                : `Hello ${this.props.signInResp.message.fName}`
-            }
-            description={
-              this.props.signInResp.type === "error"
-                ? "The username or the password you entered doesn't match any account"
-                : `Welcome back to Driblets! Let's save some water today! `
-            }
+            type="negative"
+            title="Could not log in"
+            description="The username or the password you entered doesn't match any account"
           />
         )}
         <Form.Field error={this.state.errors.username} required>

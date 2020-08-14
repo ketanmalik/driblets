@@ -1,5 +1,6 @@
-const User = require("../../models/user");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const User = require("../../models/user");
 
 module.exports = {
   createUser: async (args) => {
@@ -34,6 +35,17 @@ module.exports = {
     if (!isEqual) {
       throw new Error("wrong password");
     }
-    return { userId: user.id, fName: user.fName, lName: user.lName };
+    const token = jwt.sign(
+      { userId: user.id, email: user.email },
+      "dribletssupersecretkey",
+      { expiresIn: "1h" }
+    );
+    return {
+      userId: user.id,
+      fName: user.fName,
+      lName: user.lName,
+      token: token,
+      tokenExpiration: 1,
+    };
   },
 };

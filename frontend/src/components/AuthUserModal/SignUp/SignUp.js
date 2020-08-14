@@ -90,7 +90,14 @@ class SignUp extends Component {
             description="Please fill all the mandatory fileds correctly."
           />
         )}
-
+        {this.props.signUpResp && this.props.signUpResp.type === "error" && (
+          <ToastMessage
+            close={this.props.onCloseToastHandler}
+            type="negative"
+            title="Could not sign up"
+            description={this.props.signUpResp.message}
+          />
+        )}
         <Form.Group widths="equal">
           <Form.Field error={this.state.errors.fName} required>
             <label>First Name</label>
@@ -158,12 +165,14 @@ class SignUp extends Component {
 const mapStateToProps = (state) => {
   return {
     loading: state.auth.loading,
+    signUpResp: state.auth.signUpResp,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     onSignUp: (payload) => dispatch(actions.signUpHandler(payload)),
+    onCloseToastHandler: () => dispatch(actions.resetSignUpRespHandler()),
   };
 };
 
