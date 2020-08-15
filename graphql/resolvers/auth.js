@@ -25,7 +25,13 @@ module.exports = {
     }
   },
 
-  login: async (args) => {
+  logout: async (args, { res }) => {
+    console.log("trying to log out !!!!!!!");
+    res.cookie("refresh_token", null, { httpOnly: true });
+    return "Logout Successful";
+  },
+
+  login: async (args, { res }) => {
     const { email, password } = args;
     const user = await User.findOne({ email: email });
     if (!user) {
@@ -38,8 +44,10 @@ module.exports = {
     const token = jwt.sign(
       { userId: user.id, email: user.email },
       "dribletssupersecretkey",
-      { expiresIn: "1h" }
+      { expiresIn: "30s" }
     );
+
+    res.cookie("refresh_token", user.id, { httpOnly: true });
 
     return {
       userId: user.id,
@@ -47,6 +55,7 @@ module.exports = {
       lName: user.lName,
       token: token,
       tokenExpiration: 1,
+      refreshToken: user.id,
     };
   },
 };

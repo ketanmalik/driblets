@@ -7,6 +7,19 @@ import ToastMessage from "../../UI/ToastMessage/ToastMessage";
 import "./UserToolbar.css";
 
 class UserToolbar extends Component {
+  componentDidMount() {
+    this.props.onRefreshSession();
+  }
+  componentDidUpdate(prevProps) {
+    if (prevProps.user === null && this.props.user !== null) {
+      this.intervalID = setInterval(() => {
+        this.props.onRefreshSession();
+      }, 20000);
+    }
+    if (prevProps.user !== null && this.props.user === null) {
+      clearInterval(this.intervalID);
+    }
+  }
   render() {
     return (
       <div className="user-toolbar">
@@ -91,6 +104,7 @@ const mapDispatchToProps = (dispatch) => {
     onAuthUserHandler: () => dispatch(actions.authUserModalHandler()),
     onCloseToastHandler: () => dispatch(actions.resetSignInRespHandler()),
     onLogout: () => dispatch(actions.logout()),
+    onRefreshSession: () => dispatch(actions.refreshSessionHandler()),
     onSignUpCloseToastHandler: () => dispatch(actions.resetSignUpRespHandler()),
   };
 };

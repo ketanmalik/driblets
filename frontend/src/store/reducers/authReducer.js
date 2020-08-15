@@ -5,7 +5,7 @@ const initialState = {
   signInLoading: false,
   signInResp: null,
   signUpResp: null,
-  showAuthUserModal: true,
+  showAuthUserModal: false,
   user: null,
 };
 
@@ -31,6 +31,10 @@ const authReducer = (state = initialState, action) => {
       return { ...state, loading: true };
     case actionTypes.SIGN_UP_SUCCESS:
       return signUpSuccessHandler(state, action.res);
+    case actionTypes.TEST_USER:
+      return testUser(state);
+    case actionTypes.UPDATE_REFRESHED_USER:
+      return { ...state, user: action.res.data.refreshSession };
     default:
       return state;
   }
@@ -53,7 +57,6 @@ const signInSuccesshandler = (state, res) => {
     signInResp["type"] = "error";
     signInResp["message"] = res.errors[0].message;
   } else {
-    console.log(res);
     signInResp["type"] = "success";
     signInResp["message"] = {
       fName: res.data.login.fName,
@@ -107,6 +110,10 @@ const signUpSuccessHandler = (state, res) => {
     signUpResp: signUpResp,
     showAuthUserModal: showAuthUserModal,
   };
+};
+
+const testUser = (state) => {
+  return state;
 };
 
 export default authReducer;

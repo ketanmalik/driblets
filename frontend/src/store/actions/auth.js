@@ -8,7 +8,74 @@ export const authUserModalHandler = () => {
 };
 
 export const logout = () => {
+  return async (dispatch) => {
+    let requestBody = {
+      query: `
+        query {
+          logout
+        }
+      `,
+    };
+
+    fetch("/graphql", {
+      method: "POST",
+      body: JSON.stringify(requestBody),
+      headers: { "Content-Type": "application/json" },
+    })
+      .then((res) => {
+        if (res.status !== 200 && res.data !== 201) {
+          throw { error: "unsuccessful logout" };
+        }
+        return res.json();
+      })
+      .then((resData) => {
+        dispatch(logoutSuccess());
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+};
+
+export const logoutSuccess = () => {
   return { type: actionTypes.LOGOUT };
+};
+
+export const refreshSessionHandler = () => {
+  return async (dispatch) => {
+    const requestBody = {
+      query: `
+        query {
+          refreshSession {
+            userId
+            fName
+            lName
+            token
+            tokenExpiration
+            refreshToken
+          }
+        }
+      `,
+    };
+
+    fetch("/graphql", {
+      method: "POST",
+      body: JSON.stringify(requestBody),
+      headers: { "Content-Type": "application/json" },
+    })
+      .then((res) => {
+        if (res.status !== 200 && res.data !== 201) {
+          throw { error: "session expired" };
+        }
+        return res.json();
+      })
+      .then((resData) => {
+        dispatch(updateRefreshedUser(resData));
+      })
+      .catch((err) => {
+        console.log("refresh failed: ", err);
+      });
+  };
 };
 
 export const resetSignInRespHandler = () => {
@@ -39,6 +106,7 @@ export const signInHandler = (payload) => {
             lName
             token
             tokenExpiration
+            refreshToken
           }
         }
       `,
@@ -135,4 +203,49 @@ export const signUpStartHandler = () => {
 
 export const signUpSuccessHandler = (res) => {
   return { type: actionTypes.SIGN_UP_SUCCESS, res: res };
+};
+
+export const testUser = (token) => {
+  return async (dispatch) => {
+    const requestBody = {
+      query: `
+        query {
+          users {
+            _id
+            address
+            email
+            fName
+            lName
+          }
+        }
+      `,
+    };
+
+    fetch("/graphql", {
+      method: "POST",
+      body: JSON.stringify(requestBody),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    })
+      .then((res) => {
+        if (res.status !== 200 && res.data !== 201) {
+          throw { error: "session expired" };
+        }
+        return res.json();
+      })
+      .then((resData) => {
+        console.log(resData);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    return { type: actionTypes.TEST_USER };
+  };
+};
+
+export const updateRefreshedUser = (res) => {
+  return { type: actionTypes.UPDATE_REFRESHED_USER, res: res };
 };

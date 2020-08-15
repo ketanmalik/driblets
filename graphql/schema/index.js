@@ -15,6 +15,7 @@ module.exports = buildSchema(`
         lName: String!
         token: String!
         tokenExpiration: Int!
+        refreshToken: ID!
     }
 
     type User {
@@ -29,6 +30,8 @@ module.exports = buildSchema(`
 
     type RootQuery {
         login(email: String!, password: String!): AuthData!
+        logout: String
+        refreshSession: AuthData!
         test: String
         users: [User!]!
     }
