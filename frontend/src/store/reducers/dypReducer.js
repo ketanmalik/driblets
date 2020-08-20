@@ -1,5 +1,4 @@
 import * as actionTypes from "../actions/actionTypes";
-import axios from "axios";
 
 const initialState = {
   report: {
@@ -9,9 +8,14 @@ const initialState = {
     id: "",
     intensity: "",
     status: "",
+    trackingId: "",
     x_lon: "",
     y_lat: "",
   },
+  reportError: false,
+  showModal: false,
+  startSubmit: false,
+  submitSuccess: false,
 };
 
 const dypReducer = (state = initialState, action) => {
@@ -26,6 +30,14 @@ const dypReducer = (state = initialState, action) => {
       return addReportIntensity(state, action.intensity);
     case actionTypes.RESET_REPORT:
       return resetReport(state);
+    case actionTypes.RESET_REPORT_ERROR:
+      return { ...state, reportError: false };
+    case actionTypes.SHOW_MODAL_HANDLER:
+      return { ...state, showModal: action.bool };
+    case actionTypes.SUBMIT_REPORT_START:
+      return { ...state, startSubmit: true, reportError: false };
+    case actionTypes.SUBMIT_REPORT_END:
+      return submitReportEnd(state, action.mode);
     default:
       return state;
   }
@@ -52,14 +64,41 @@ const addReportIntensity = (state, intensity) => {
 };
 
 const addReportReducer = (state) => {
-  console.log("redd");
   return state;
 };
 
 const resetReport = (state) => {
   let report = { ...state.report };
+  let { reportError, startSubmit } = { ...state };
+  reportError = false;
+  startSubmit = false;
   Object.keys(report).map((key) => (report[key] = ""));
-  return { ...state, report: report };
+  return {
+    ...state,
+    report: report,
+    reportError: reportError,
+    showModal: false,
+    startSubmit: startSubmit,
+  };
+};
+
+const submitReportEnd = (state, mode) => {
+  let { reportError, submitSuccess } = { ...state };
+  if (mode === "err") {
+    reportError = true;
+    submitSuccess = false;
+  } else {
+    reportError = false;
+    submitSuccess = true;
+  }
+
+  return {
+    ...state,
+    startSubmit: false,
+    reportError: reportError,
+    submitSuccess,
+    showModal: false,
+  };
 };
 
 export default dypReducer;

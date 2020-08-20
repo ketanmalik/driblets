@@ -4,6 +4,7 @@ import * as qs from "qs";
 
 export const addReport = (report) => {
   return async (dispatch) => {
+    dispatch(submitReportStartHandler());
     report.date = new Date();
     report.status = "Report Submitted";
 
@@ -13,9 +14,11 @@ export const addReport = (report) => {
       grant_type: "client_credentials",
     };
 
+    let url =
+      "https://www.arcgis.com/sharing/rest/oauth2/token?client_id=8mtvSSH8nqS00zhf&client_secret=bee8b95d682840ff95d7a14d84a9ad3a&grant_type=client_credentials";
+
     axios({
-      url:
-        "https://www.arcgis.com/sharing/rest/oauth2/token?client_id=8mtvSSH8nqS00zhf&client_secret=bee8b95d682840ff95d7a14d84a9ad3a&grant_type=client_credentials",
+      url: url,
       method: "POST",
       data: payload,
     })
@@ -34,21 +37,15 @@ export const addReport = (report) => {
                 }
               },
               "attributes" : {
-                "Name" : "My Point",
-                "Intensity" : "Mild"
+                "Name" : "${report.address}",
+                "Intensity" : "${report.intensity}"
               }
             }
           ]`,
         };
 
-        let url =
+        url =
           "https://services5.arcgis.com/PJBXFilHiiwW6bPy/arcgis/rest/services/new_report/FeatureServer/0/applyEdits";
-
-        let config = {
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-        };
 
         axios({
           method: "POST",
@@ -58,13 +55,20 @@ export const addReport = (report) => {
             "content-type": "application/x-www-form-urlencoded;charset=utf-8",
           },
         })
-          .then((res) => console.log("final res:", res))
-          .catch((err) => console.log("err: ", err));
+          .then((res) => {
+            if (res.data && res.data.error) {
+              throw { err: res.data.error };
+            }
+            console.log(res);
+            dispatch(submitReportEndHandler());
+          })
+          .catch((error) => {
+            dispatch(submitReportEndHandler("err"));
+          });
+      })
+      .catch((err) => {
+        dispatch(submitReportEndHandler("err"));
       });
-
-    return {
-      type: actionTypes.ADD_REPORT,
-    };
   };
 };
 
@@ -91,4 +95,27 @@ export const addReportIntensity = (intensity) => {
 
 export const resetReport = () => {
   return { type: actionTypes.RESET_REPORT };
+};
+
+export const resetReportError = () => {
+  return {
+    type: actionTypes.RESET_REPORT_ERROR,
+  };
+};
+
+export const showModalHandler = (bool) => {
+  return {
+    type: actionTypes.SHOW_MODAL_HANDLER,
+    bool: bool,
+  };
+};
+
+export const submitReportStartHandler = () => {
+  return {
+    type: actionTypes.SUBMIT_REPORT_START,
+  };
+};
+
+export const submitReportEndHandler = (mode = "no_err") => {
+  return { type: actionTypes.SUBMIT_REPORT_END, mode: mode };
 };

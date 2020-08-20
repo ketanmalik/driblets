@@ -11,12 +11,6 @@ const options = [
 ];
 
 class EnterDetailsForm extends Component {
-  state = {
-    errors: {
-      intensity: null,
-    },
-  };
-
   handleIntensityChange = (e, { value }) => {
     this.props.onAddReportIntensity(value);
   };

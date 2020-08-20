@@ -4,6 +4,8 @@ export {
   addReportDescription,
   addReportIntensity,
   resetReport,
+  resetReportError,
+  showModalHandler,
 } from "./dyp";
 export {
   authUserModalHandler,

@@ -2,8 +2,10 @@ import React, { Component } from "react";
 import {
   Button,
   Divider,
+  Dimmer,
   Icon,
   Header,
+  Loader,
   Message,
   Modal,
 } from "semantic-ui-react";
@@ -17,7 +19,6 @@ import "./DoYourPart.css";
 
 class DoYourPart extends Component {
   state = {
-    openModal: false,
     showErrToastMsg: false,
     toastDescription: "",
     toastTitle: "",
@@ -28,7 +29,7 @@ class DoYourPart extends Component {
   };
 
   closeModal = () => {
-    this.setState({ openModal: false });
+    this.props.onShowModalHandler(false);
   };
 
   componentWillUnmount = () => {
@@ -58,10 +59,8 @@ class DoYourPart extends Component {
       });
       return;
     }
-    this.setState({ openModal: true });
+    this.props.onShowModalHandler(true);
   };
-
-  dypDetailsHandler = () => {};
 
   render() {
     let currentDisplay = (
@@ -102,6 +101,9 @@ class DoYourPart extends Component {
       );
     }
 
+    if (this.props.submitSuccess) {
+      this.props.history.push("/");
+    }
     return (
       <div className="dyp-wrapper">
         {currentDisplay}
@@ -113,11 +115,22 @@ class DoYourPart extends Component {
             close={this.dypCloseErrToasthandler}
           />
         )}
+        {this.props.reportError && (
+          <ToastMessage
+            type="negative"
+            title="Network Error"
+            description="Your request could not be processed. Please try again later."
+            close={this.props.onResetReportError}
+          />
+        )}
         <Modal
-          open={this.state.openModal}
+          open={this.props.openModal}
           onClose={this.closeModal}
           size="small"
         >
+          <Dimmer active={this.props.loading}>
+            <Loader />
+          </Dimmer>
           <Modal.Header>Submit Incident Report?</Modal.Header>
           <Modal.Content>
             Are you sure you want to submit a water leakage incident report at{" "}
@@ -139,7 +152,11 @@ class DoYourPart extends Component {
 
 const mapStateToProps = (state) => {
   return {
+    loading: state.dyp.startSubmit,
+    openModal: state.dyp.showModal,
     report: state.dyp.report,
+    reportError: state.dyp.reportError,
+    submitSuccess: state.dyp.submitSuccess,
     user: state.auth.user,
   };
 };
@@ -148,6 +165,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onAddReport: (report) => dispatch(actions.addReport(report)),
     onResetReport: () => dispatch(actions.resetReport()),
+    onResetReportError: () => dispatch(actions.resetReportError()),
+    onShowModalHandler: (bool) => dispatch(actions.showModalHandler(bool)),
   };
 };
 
