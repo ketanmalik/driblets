@@ -1,3 +1,7 @@
 .webmap-wrapper {
   height: 42rem;
 }
+
+.esri-view {
+  margin: 3rem 0 !important;
+}

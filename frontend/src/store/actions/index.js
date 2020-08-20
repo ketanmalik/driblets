@@ -1,4 +1,10 @@
-export { addReport } from "./dyp";
+export {
+  addReport,
+  addReportAddress,
+  addReportDescription,
+  addReportIntensity,
+  resetReport,
+} from "./dyp";
 export {
   authUserModalHandler,
   logout,

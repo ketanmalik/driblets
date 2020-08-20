@@ -3,6 +3,7 @@
   position: fixed;
   top: 2rem;
   animation: slide-message 1s 1 forwards;
+  z-index: 2000;
   /* animation-fill-mode: forwards; */
 }
 

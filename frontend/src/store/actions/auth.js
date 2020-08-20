@@ -48,6 +48,7 @@ export const refreshSessionHandler = () => {
         query {
           refreshSession {
             userId
+            address
             fName
             lName
             token
@@ -102,6 +103,7 @@ export const signInHandler = (payload) => {
         query {
           login(email: "${payload.username}", password: "${payload.password}") {
             userId
+            address
             fName
             lName
             token

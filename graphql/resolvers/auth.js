@@ -51,6 +51,7 @@ module.exports = {
 
     return {
       userId: user.id,
+      address: user.address,
       fName: user.fName,
       lName: user.lName,
       token: token,

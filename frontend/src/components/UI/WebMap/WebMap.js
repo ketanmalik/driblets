@@ -19,87 +19,128 @@ class WebMap extends Component {
         "esri/widgets/Search",
         "esri/widgets/Editor",
         "esri/widgets/Expand",
+        "esri/Graphic",
+        "esri/layers/GraphicsLayer",
       ],
       { css: true }
-    ).then(([Locator, WebMap, MapView, Search, Editor, Expand]) => {
-      var locatorTask = new Locator({
-        url:
-          "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer",
-      });
-
-      const webmap = new WebMap({
-        portalItem: {
-          id: "c86a00fda2a64e569bb9a0e3df535442",
-        },
-      });
-
-      this.view = new MapView({
-        container: this.mapRef.current,
-        map: webmap,
-      });
-
-      if (this.props.mode !== "home") {
-        this.view.when(() => {
-          // this.view.popup.autoOpenEnabled = false;
-
-          let searchWidget = new Search({
-            view: this.view,
-            locationEnabled: false,
-            // disabled: true,
-          });
-
-          this.view.ui.add(searchWidget, {
-            position: "top-right",
-          });
-
-          let editor = new Editor({
-            view: this.view,
-            allowedWorkflows: ["create"],
-            // _handleSave: (e) => this.addFeature(e),
-          });
-
-          var expand = new Expand({
-            expandIconClass: "esri-icon-edit",
-            view: this.view,
-            content: editor,
-          });
-
-          this.view.ui.add(expand, {
-            position: "top-right",
-          });
-
-          searchWidget.on("select-result", function (event) {
-            console.log("event: ", event);
-          });
-
-          this.view.on("click", function (event) {
-            // event is the event handle returned after the event fires.
-            var lat = Math.round(event.mapPoint.latitude * 1000) / 1000;
-            var lon = Math.round(event.mapPoint.longitude * 1000) / 1000;
-
-            var params = {
-              location: event.mapPoint,
-            };
-
-            locatorTask
-              .locationToAddress(params)
-              .then(function (response) {
-                // If an address is successfully found, show it in the popup's content
-                console.log(response);
-              })
-              .catch(function (error) {
-                // If the promise fails and no result is found, show a generic message
-                console.log("No address was found for this location");
-              });
-          });
+    ).then(
+      ([
+        Locator,
+        WebMap,
+        MapView,
+        Search,
+        Editor,
+        Expand,
+        Graphic,
+        GraphicsLayer,
+      ]) => {
+        var locatorTask = new Locator({
+          url:
+            "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer",
         });
+
+        const webmap = new WebMap({
+          portalItem: {
+            id: "c86a00fda2a64e569bb9a0e3df535442",
+          },
+        });
+
+        this.view = new MapView({
+          container: this.mapRef.current,
+          map: webmap,
+        });
+
+        if (this.props.mode !== "home") {
+          this.view.when(() => {
+            // this.view.popup.autoOpenEnabled = false;
+
+            var graphicsLayer = new GraphicsLayer();
+            webmap.add(graphicsLayer);
+
+            let searchWidget = new Search({
+              view: this.view,
+              locationEnabled: false,
+              // disabled: true,
+            });
+
+            this.view.ui.add(searchWidget, {
+              position: "top-right",
+            });
+
+            let editor = new Editor({
+              view: this.view,
+              allowedWorkflows: ["create"],
+              // _handleSave: (e) => this.addFeature(e),
+            });
+
+            var expand = new Expand({
+              expandIconClass: "esri-icon-edit",
+              view: this.view,
+              content: editor,
+            });
+
+            // this.view.ui.add(editor, {
+            //   position: "top-right",
+            // });
+
+            searchWidget.on("select-result", function (event) {});
+
+            let self = this;
+
+            this.view.on("click", function (event) {
+              let lat = Math.round(event.mapPoint.latitude * 1000) / 1000;
+              let lon = Math.round(event.mapPoint.longitude * 1000) / 1000;
+
+              let params = {
+                location: event.mapPoint,
+              };
+
+              locatorTask
+                .locationToAddress(params)
+                .then(function (response) {
+                  graphicsLayer.removeAll();
+                  let point = {
+                    type: "point",
+                    longitude: lon,
+                    latitude: lat,
+                  };
+
+                  let simpleMarkerSymbol = {
+                    type: "simple-marker",
+                    color: [226, 119, 40],
+                    outline: {
+                      color: [255, 255, 255],
+                      width: 1,
+                    },
+                  };
+
+                  let pointGraphic = new Graphic({
+                    geometry: point,
+                    symbol: simpleMarkerSymbol,
+                  });
+                  graphicsLayer.add(pointGraphic);
+                  self.props.onAddReportAddress({
+                    address: response.address,
+                    x_lon: response.location.x,
+                    y_lat: response.location.y,
+                  });
+                })
+                .catch(function (error) {
+                  graphicsLayer.removeAll();
+                  self.props.onAddReportAddress({
+                    address: "",
+                    x_lon: "",
+                    y_lat: "",
+                  });
+                });
+            });
+          });
+        }
       }
-    });
+    );
   }
 
-  addFeature = (event) => {
-    console.log(event);
-  };
+  addFeature = (event) => {};
 
   componentWillUnmount() {
     if (this.view) {
@@ -114,13 +155,18 @@ class WebMap extends Component {
 
 const mapStateToProps = (state) => {
   return {
+    address: state.dyp.report.address,
     report: state.dyp.report,
+    x_lon: state.dyp.report.x_lon,
+    y_lat: state.dyp.report.y_lat,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     onReportAdded: (report) => dispatch(actions.addReport(report)),
+    onAddReportAddress: (address) =>
+      dispatch(actions.addReportAddress(address)),
   };
 };
 

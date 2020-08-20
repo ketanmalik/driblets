@@ -52,7 +52,7 @@ class UserToolbar extends Component {
                     className="user-toolbar__btn"
                     // onClick={this.props.onAuthUserHandler}
                   >
-                    Dashboard
+                    {this.props.user.fName}
                   </Button>
                 </li>
                 <li>

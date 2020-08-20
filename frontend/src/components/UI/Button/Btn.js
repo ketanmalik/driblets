@@ -8,7 +8,7 @@ const btn = (props) => {
     <Button
       onClick={props.clicked}
       className={type}
-      style={{ width: props.width }}
+      style={{ width: props.width, margin: props.margin }}
     >
       {props.text}
     </Button>
