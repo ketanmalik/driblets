@@ -59,8 +59,7 @@ export const addReport = (report) => {
             if (res.data && res.data.error) {
               throw { err: res.data.error };
             }
-            console.log(res);
-            dispatch(submitReportEndHandler());
+            dispatch(submitReportToDb(report, res.data.addResults[0]));
           })
           .catch((error) => {
             dispatch(submitReportEndHandler("err"));
@@ -118,4 +117,66 @@ export const submitReportStartHandler = () => {
 
 export const submitReportEndHandler = (mode = "no_err") => {
   return { type: actionTypes.SUBMIT_REPORT_END, mode: mode };
+};
+
+export const submitReportToDb = (report, resp) => {
+  return (dispatch) => {
+    console.log("db", report, resp);
+    let date = report.date.toDateString();
+    let objectId = resp.objectId.toString();
+    let trackingId = resp.globalId + resp.objectId;
+
+    let requestBody = {
+      query: `
+        mutation {
+          addReport(report:{
+            address: "${report.address}"
+            date: "${date}"
+            description:"${report.description}"
+            intensity:"${report.intensity}"
+            objectId:"${objectId}"
+            status:"${report.status}"
+            trackingId:"${trackingId}"
+          }) {
+            _id
+            address
+            creator{
+              _id
+              address
+              email
+              fName
+              lName
+            }
+            date
+            description
+            intensity
+            objectId
+            status
+            trackingId
+          }
+        }
+      `,
+    };
+
+    fetch("/graphql", {
+      method: "POST",
+      body: JSON.stringify(requestBody),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => {
+        if (res.status !== 200 && res.status !== 201) {
+          throw { error: res.statusText };
+        }
+        return res.json();
+      })
+      .then((resData) => {
+        console.log("success: ", resData);
+        return dispatch(submitReportEndHandler());
+      })
+      .catch((err) => {
+        return dispatch(submitReportEndHandler("err"));
+      });
+  };
 };

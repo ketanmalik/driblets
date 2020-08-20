@@ -26,7 +26,6 @@ module.exports = {
   },
 
   logout: async (args, { res }) => {
-    console.log("trying to log out !!!!!!!");
     res.cookie("refresh_token", null, { httpOnly: true });
     return "Logout Successful";
   },
