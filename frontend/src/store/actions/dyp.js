@@ -59,16 +59,16 @@ export const addReport = (report) => {
             if (res.data && res.data.error) {
               throw { err: res.data.error };
             }
-            dispatch(
+            return dispatch(
               submitReportToDb(report, res.data.addResults[0], respData)
             );
           })
           .catch((error) => {
-            dispatch(submitReportEndHandler("err"));
+            return dispatch(submitReportEndHandler("err"));
           });
       })
       .catch((err) => {
-        dispatch(submitReportEndHandler("err"));
+        return dispatch(submitReportEndHandler("err"));
       });
   };
 };
@@ -204,11 +204,11 @@ export const submitReportToDb = (report, resp, token) => {
       })
       .then((resData) => {
         dispatch(updateLastSubmittedReport(resData.data.addReport));
-        dispatch(submitReportEndHandler());
+        return dispatch(submitReportEndHandler());
       })
       .catch((err) => {
         dispatch(deleteLastSubmittedReport(resp.objectId, token));
-        dispatch(submitReportEndHandler("err"));
+        return dispatch(submitReportEndHandler("err"));
       });
   };
 };

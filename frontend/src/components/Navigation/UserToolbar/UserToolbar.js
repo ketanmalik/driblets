@@ -23,6 +23,21 @@ class UserToolbar extends Component {
   render() {
     return (
       <div className="user-toolbar">
+        {this.props.signUpResp && this.props.signUpResp.type === "success" && (
+          <ToastMessage
+            close={this.props.onSignUpCloseToastHandler}
+            type="positive"
+            title={`Hello ${this.props.signUpResp.message.fName}`}
+            description={`Welcome to Driblets! Let's save some water today! `}
+          />
+        )}
+        {this.props.showLogoutToast && (
+          <ToastMessage
+            close={this.props.onCloseLogoutToast}
+            type="positive"
+            title={`You have been successfully logged out`}
+          />
+        )}
         {this.props.user ? (
           <React.Fragment>
             {this.props.signInResp &&
@@ -32,15 +47,6 @@ class UserToolbar extends Component {
                   type="positive"
                   title={`Hello ${this.props.signInResp.message.fName}`}
                   description={`Welcome back to Driblets! Let's save some water today! `}
-                />
-              )}
-            {this.props.signUpResp &&
-              this.props.signUpResp.type === "success" && (
-                <ToastMessage
-                  close={this.props.onSignUpCloseToastHandler}
-                  type="positive"
-                  title={`Hello ${this.props.signUpResp.message.fName}`}
-                  description={`Welcome to Driblets! Let's save some water today! `}
                 />
               )}
 
@@ -92,6 +98,7 @@ class UserToolbar extends Component {
 
 const mapStateToProps = (state) => {
   return {
+    showLogoutToast: state.auth.showLogoutToast,
     signInResp: state.auth.signInResp,
     signUpResp: state.auth.signUpResp,
     showAuthUserModal: state.auth.showAuthUserModal,
@@ -105,6 +112,7 @@ const mapDispatchToProps = (dispatch) => {
     onCloseToastHandler: () => dispatch(actions.resetSignInRespHandler()),
     onLogout: () => dispatch(actions.logout()),
     onRefreshSession: () => dispatch(actions.refreshSessionHandler()),
+    onCloseLogoutToast: () => dispatch(actions.showLogoutToast(false)),
     onSignUpCloseToastHandler: () => dispatch(actions.resetSignUpRespHandler()),
   };
 };

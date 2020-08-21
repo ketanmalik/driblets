@@ -1,19 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Button, Icon, Form, Input } from "semantic-ui-react";
+import { Button, Checkbox, Icon, Form, Input } from "semantic-ui-react";
 import * as actions from "../../../store/actions/index";
 import ToastMessage from "../../UI/ToastMessage/ToastMessage";
-import "./SignUp.css";
 
 class SignUp extends Component {
   state = {
-    formFields: {
-      fName: null,
-      lName: null,
-      username: null,
-      password: null,
-      address: null,
-    },
+    checkboxText: "Show Password",
     errors: {
       fName: false,
       lName: false,
@@ -22,6 +15,13 @@ class SignUp extends Component {
       address: false,
     },
     formError: false,
+    formFields: {
+      fName: null,
+      lName: null,
+      username: null,
+      password: null,
+      address: null,
+    },
     hidePassword: true,
   };
 
@@ -59,6 +59,18 @@ class SignUp extends Component {
     return !(password.length >= 6 && password.length <= 12);
   };
 
+  passwordCheckboxHandler = (e, data) => {
+    let { checkboxText, hidePassword } = { ...this.state };
+    if (data.checked) {
+      checkboxText = "Hide Password";
+      hidePassword = false;
+    } else {
+      checkboxText = "Show Password";
+      hidePassword = true;
+    }
+    this.setState({ checkboxText: checkboxText, hidePassword: hidePassword });
+  };
+
   signUpFormSubmithandler = () => {
     let { formFields, formError, errors } = this.state;
     formError = false;
@@ -77,11 +89,7 @@ class SignUp extends Component {
 
   render() {
     return (
-      <Form
-        onSubmit={this.signUpFormSubmithandler}
-        error
-        loading={this.props.loading}
-      >
+      <Form onSubmit={this.signUpFormSubmithandler} error>
         {this.state.formError && (
           <ToastMessage
             close={this.closeToastHandler}
@@ -143,6 +151,17 @@ class SignUp extends Component {
             </Input>
           </Form.Field>
         </Form.Group>
+        <Form.Group widths={2}>
+          <Form.Field></Form.Field>
+          <Form.Field>
+            <Checkbox
+              onClick={this.passwordCheckboxHandler}
+              toggle
+              label={this.state.checkboxText}
+            />
+          </Form.Field>
+        </Form.Group>
+
         <Form.Field error={this.state.errors.address} required>
           <label>Address</label>
           <Input
@@ -164,7 +183,6 @@ class SignUp extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    loading: state.auth.loading,
     signUpResp: state.auth.signUpResp,
   };
 };

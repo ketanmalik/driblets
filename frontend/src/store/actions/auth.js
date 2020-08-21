@@ -29,7 +29,7 @@ export const logout = () => {
         return res.json();
       })
       .then((resData) => {
-        dispatch(logoutSuccess());
+        return dispatch(logoutSuccess());
       })
       .catch((err) => {
         console.log(err);
@@ -71,7 +71,7 @@ export const refreshSessionHandler = () => {
         return res.json();
       })
       .then((resData) => {
-        dispatch(updateRefreshedUser(resData));
+        return dispatch(updateRefreshedUser(resData));
       })
       .catch((err) => {
         console.log("refresh failed: ", err);
@@ -85,6 +85,13 @@ export const resetSignInRespHandler = () => {
 
 export const resetSignUpRespHandler = () => {
   return { type: actionTypes.RESET_SIGN_UP_RESP };
+};
+
+export const showLogoutToast = (bool) => {
+  return {
+    type: actionTypes.SHOW_LOGOUT_TOAST,
+    bool: bool,
+  };
 };
 
 export const signInFailHandler = (err) => {
@@ -128,10 +135,10 @@ export const signInHandler = (payload) => {
         return res.json();
       })
       .then((resData) => {
-        dispatch(signInSuccessHandler(resData));
+        return dispatch(signInSuccessHandler(resData));
       })
       .catch((err) => {
-        dispatch(signInFailHandler(err));
+        return dispatch(signInFailHandler(err));
       });
   };
 };
@@ -186,15 +193,24 @@ export const signUpHandler = (payload) => {
     })
       .then((res) => {
         if (res.status !== 200 && res.status !== 201) {
-          throw { error: res.statusText };
+          throw {
+            err: "There's a network error. Please try again after some time.",
+          };
         }
         return res.json();
       })
       .then((resData) => {
-        dispatch(signUpSuccessHandler(resData));
+        if (resData.errors) {
+          throw { err: resData.errors[0].message };
+        }
+        let signInPayload = {
+          username: payload.username,
+          password: payload.password,
+        };
+        return dispatch(signInHandler(signInPayload));
       })
       .catch((err) => {
-        dispatch(signUpFailHandler(err));
+        return dispatch(signUpFailHandler(err));
       });
   };
 };

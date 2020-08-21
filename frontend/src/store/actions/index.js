@@ -14,6 +14,7 @@ export {
   refreshSessionHandler,
   resetSignInRespHandler,
   resetSignUpRespHandler,
+  showLogoutToast,
   signInHandler,
   signUpHandler,
   testUser,

@@ -1,15 +1,15 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Button, Icon, Form, Input } from "semantic-ui-react";
+import { Button, Checkbox, Icon, Form, Input } from "semantic-ui-react";
 import * as actions from "../../../store/actions/index";
 import ToastMessage from "../../UI/ToastMessage/ToastMessage";
-import "./SignIn.css";
 
 class SignIn extends Component {
   state = {
-    formFields: { username: null, password: null },
+    checkboxText: "Show Password",
     errors: { username: false, password: false },
     formError: false,
+    formFields: { username: null, password: null },
     hidePassword: true,
   };
 
@@ -31,6 +31,18 @@ class SignIn extends Component {
     this.setState({ errors: errors, formFields: formFields });
   };
 
+  passwordCheckboxHandler = (e, data) => {
+    let { checkboxText, hidePassword } = { ...this.state };
+    if (data.checked) {
+      checkboxText = "Hide Password";
+      hidePassword = false;
+    } else {
+      checkboxText = "Show Password";
+      hidePassword = true;
+    }
+    this.setState({ checkboxText: checkboxText, hidePassword: hidePassword });
+  };
+
   signInFormHandler = () => {
     let { formFields, formError, errors } = { ...this.state };
     formError = false;
@@ -49,11 +61,7 @@ class SignIn extends Component {
 
   render() {
     return (
-      <Form
-        onSubmit={this.signInFormHandler}
-        error
-        loading={this.props.signInLoading}
-      >
+      <Form onSubmit={this.signInFormHandler} error>
         {this.state.formError && (
           <ToastMessage
             close={this.closeToastHandler}
@@ -97,6 +105,13 @@ class SignIn extends Component {
             <input />
           </Input>
         </Form.Field>
+        <Form.Field>
+          <Checkbox
+            onClick={this.passwordCheckboxHandler}
+            toggle
+            label={this.state.checkboxText}
+          />
+        </Form.Field>
         <Button type="submit" className="modal-content__btn">
           Log In
         </Button>
@@ -107,7 +122,7 @@ class SignIn extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    signInLoading: state.auth.signInLoading,
+    dimmer: state.auth.dimmer,
     signInResp: state.auth.signInResp,
   };
 };

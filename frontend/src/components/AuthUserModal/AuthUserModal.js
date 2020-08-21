@@ -1,6 +1,14 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Button, Divider, Grid, Header, Segment } from "semantic-ui-react";
+import {
+  Button,
+  Dimmer,
+  Divider,
+  Grid,
+  Header,
+  Loader,
+  Segment,
+} from "semantic-ui-react";
 import * as actions from "../../store/actions/index";
 import Backdrop from "../UI/Backdrop/Backdrop";
 import SignIn from "./SignIn/SignIn";
@@ -16,6 +24,20 @@ class AuthUserModal extends Component {
     this.setState({ showSignUpForm: false }, this.props.onCloseModalHandler);
   };
 
+  componentDidMount = () => {
+    window.addEventListener("resize", this.resizeHandler.bind(this));
+  };
+
+  componentWillUnmount = () => {
+    window.removeEventListener("resize", this.resizeHandler.bind(this));
+  };
+
+  resizeHandler = () => {
+    if (window.innerWidth > 750) {
+      this.setState({ showSignUpForm: false });
+    }
+  };
+
   showSignUpFormHandler = () => {
     this.setState({ showSignUpForm: true });
   };
@@ -27,12 +49,12 @@ class AuthUserModal extends Component {
           show={this.props.showAuthUserModal}
           clicked={this.backdropClickHandler}
         />
-        <div
-          className="modal"
-          // className={`modal ${this.props.showAuthUserModal ? `open` : `close`}`}
-        >
+        <div className="modal">
           <div className="modal-content">
             <Segment>
+              <Dimmer active={this.props.dimmer} inverted>
+                <Loader />
+              </Dimmer>
               <Grid>
                 <Grid.Row>
                   <Grid.Column>
@@ -78,6 +100,7 @@ class AuthUserModal extends Component {
 
 const mapStateToProps = (state) => {
   return {
+    dimmer: state.auth.dimmer,
     showAuthUserModal: state.auth.showAuthUserModal,
   };
 };

@@ -14,7 +14,6 @@ class Home extends Component {
     this.props.history.push("doyourpart");
   };
   render() {
-    console.log(this.props.lastReport);
     return (
       <div className="home-wrapper">
         {this.props.lastReport && (

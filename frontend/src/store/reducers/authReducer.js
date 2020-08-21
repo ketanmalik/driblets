@@ -1,11 +1,11 @@
 import * as actionTypes from "../actions/actionTypes";
 
 const initialState = {
-  loading: false,
-  signInLoading: false,
+  dimmer: false,
+  showAuthUserModal: false,
+  showLogoutToast: false,
   signInResp: null,
   signUpResp: null,
-  showAuthUserModal: false,
   user: null,
 };
 
@@ -14,21 +14,29 @@ const authReducer = (state = initialState, action) => {
     case actionTypes.AUTH_USER_MODAL_HANDLER:
       return authUserModalHandler(state);
     case actionTypes.LOGOUT:
-      return { ...state, user: null };
+      return { ...state, user: null, showLogoutToast: true };
     case actionTypes.RESET_SIGN_IN_RESP:
       return { ...state, signInResp: null };
     case actionTypes.RESET_SIGN_UP_RESP:
       return { ...state, signUpResp: null };
+    case actionTypes.SHOW_LOGOUT_TOAST:
+      return { ...state, showLogoutToast: action.bool };
     case actionTypes.SIGN_IN_FAIL:
       return signInFailHandler(state, action.err);
     case actionTypes.SIGN_IN_START:
-      return { ...state, signInLoading: true };
+      return {
+        ...state,
+        dimmer: true,
+      };
     case actionTypes.SIGN_IN_SUCCESS:
       return signInSuccesshandler(state, action.res);
     case actionTypes.SIGN_UP_FAIL:
       return signUpFailHandler(state, action.err);
     case actionTypes.SIGN_UP_START:
-      return { ...state, loading: true };
+      return {
+        ...state,
+        dimmer: true,
+      };
     case actionTypes.SIGN_UP_SUCCESS:
       return signUpSuccessHandler(state, action.res);
     case actionTypes.TEST_USER:
@@ -44,8 +52,19 @@ const authUserModalHandler = (state) => {
   return {
     ...state,
     showAuthUserModal: !state.showAuthUserModal,
-    loading: false,
-    signInLoading: false,
+    dimmer: false,
+  };
+};
+
+const signInFailHandler = (state, err) => {
+  let signInResp = { ...state.signInResp };
+  signInResp["type"] = "error";
+  signInResp["message"] = err.error;
+  return {
+    ...state,
+    dimmer: false,
+    signInResp: signInResp,
+    user: null,
   };
 };
 
@@ -68,25 +87,21 @@ const signInSuccesshandler = (state, res) => {
   return {
     ...state,
     signInResp: signInResp,
-    signInLoading: false,
+    dimmer: false,
     showAuthUserModal: showAuthUserModal,
     user: user,
   };
 };
 
-const signInFailHandler = (state, err) => {
-  let signInResp = { ...state.signInResp };
-  signInResp["type"] = "error";
-  signInResp["message"] = err.error;
-  return { ...state, signInLoading: false, signInResp: signInResp, user: null };
-};
-
 const signUpFailHandler = (state, err) => {
   let signUpResp = { ...state.signUpResp };
   signUpResp["type"] = "error";
-  signUpResp["message"] =
-    "There's a network error. Please try again after some time.";
-  return { ...state, loading: false, signUpResp: signUpResp };
+  signUpResp["message"] = err.err;
+  return {
+    ...state,
+    dimmer: false,
+    signUpResp: signUpResp,
+  };
 };
 
 const signUpSuccessHandler = (state, res) => {
@@ -105,7 +120,7 @@ const signUpSuccessHandler = (state, res) => {
   }
   return {
     ...state,
-    loading: false,
+    dimmer: false,
     signUpResp: signUpResp,
     showAuthUserModal: showAuthUserModal,
   };
