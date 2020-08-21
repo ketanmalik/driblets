@@ -1,8 +1,10 @@
 const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
 const express = require("express");
 const { graphqlHTTP } = require("express-graphql");
 const graphQlResolvers = require("./graphql/resolvers/index");
 const graphQlSchema = require("./graphql/schema/index");
+const isAuth = require("./middleware/is-auth");
 const mongoose = require("mongoose");
 
 const PORT = process.env.PORT || 8080;
@@ -20,6 +22,10 @@ app.use((req, res, next) => {
   }
   next();
 });
+
+app.use(cookieParser());
+
+app.use(isAuth);
 
 app.use(
   "/graphql",

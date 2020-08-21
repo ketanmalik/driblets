@@ -8,7 +8,75 @@ export const authUserModalHandler = () => {
 };
 
 export const logout = () => {
+  return async (dispatch) => {
+    let requestBody = {
+      query: `
+        query {
+          logout
+        }
+      `,
+    };
+
+    fetch("/graphql", {
+      method: "POST",
+      body: JSON.stringify(requestBody),
+      headers: { "Content-Type": "application/json" },
+    })
+      .then((res) => {
+        if (res.status !== 200 && res.data !== 201) {
+          throw { error: "unsuccessful logout" };
+        }
+        return res.json();
+      })
+      .then((resData) => {
+        return dispatch(logoutSuccess());
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+};
+
+export const logoutSuccess = () => {
   return { type: actionTypes.LOGOUT };
+};
+
+export const refreshSessionHandler = () => {
+  return async (dispatch) => {
+    const requestBody = {
+      query: `
+        query {
+          refreshSession {
+            userId
+            address
+            fName
+            lName
+            token
+            tokenExpiration
+            refreshToken
+          }
+        }
+      `,
+    };
+
+    fetch("/graphql", {
+      method: "POST",
+      body: JSON.stringify(requestBody),
+      headers: { "Content-Type": "application/json" },
+    })
+      .then((res) => {
+        if (res.status !== 200 && res.data !== 201) {
+          throw { error: "session expired" };
+        }
+        return res.json();
+      })
+      .then((resData) => {
+        return dispatch(updateRefreshedUser(resData));
+      })
+      .catch((err) => {
+        console.log("refresh failed: ", err);
+      });
+  };
 };
 
 export const resetSignInRespHandler = () => {
@@ -17,6 +85,13 @@ export const resetSignInRespHandler = () => {
 
 export const resetSignUpRespHandler = () => {
   return { type: actionTypes.RESET_SIGN_UP_RESP };
+};
+
+export const showLogoutToast = (bool) => {
+  return {
+    type: actionTypes.SHOW_LOGOUT_TOAST,
+    bool: bool,
+  };
 };
 
 export const signInFailHandler = (err) => {
@@ -35,10 +110,12 @@ export const signInHandler = (payload) => {
         query {
           login(email: "${payload.username}", password: "${payload.password}") {
             userId
+            address
             fName
             lName
             token
             tokenExpiration
+            refreshToken
           }
         }
       `,
@@ -116,12 +193,21 @@ export const signUpHandler = (payload) => {
     })
       .then((res) => {
         if (res.status !== 200 && res.status !== 201) {
-          throw { error: res.statusText };
+          throw {
+            err: "There's a network error. Please try again after some time.",
+          };
         }
         return res.json();
       })
       .then((resData) => {
-        return dispatch(signUpSuccessHandler(resData));
+        if (resData.errors) {
+          throw { err: resData.errors[0].message };
+        }
+        let signInPayload = {
+          username: payload.username,
+          password: payload.password,
+        };
+        return dispatch(signInHandler(signInPayload));
       })
       .catch((err) => {
         return dispatch(signUpFailHandler(err));
@@ -135,4 +221,49 @@ export const signUpStartHandler = () => {
 
 export const signUpSuccessHandler = (res) => {
   return { type: actionTypes.SIGN_UP_SUCCESS, res: res };
+};
+
+export const testUser = (token) => {
+  return async (dispatch) => {
+    const requestBody = {
+      query: `
+        query {
+          users {
+            _id
+            address
+            email
+            fName
+            lName
+          }
+        }
+      `,
+    };
+
+    fetch("/graphql", {
+      method: "POST",
+      body: JSON.stringify(requestBody),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    })
+      .then((res) => {
+        if (res.status !== 200 && res.data !== 201) {
+          throw { error: "session expired" };
+        }
+        return res.json();
+      })
+      .then((resData) => {
+        console.log(resData);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    return { type: actionTypes.TEST_USER };
+  };
+};
+
+export const updateRefreshedUser = (res) => {
+  return { type: actionTypes.UPDATE_REFRESHED_USER, res: res };
 };

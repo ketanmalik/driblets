@@ -7,9 +7,37 @@ import ToastMessage from "../../UI/ToastMessage/ToastMessage";
 import "./UserToolbar.css";
 
 class UserToolbar extends Component {
+  componentDidMount() {
+    this.props.onRefreshSession();
+  }
+  componentDidUpdate(prevProps) {
+    if (prevProps.user === null && this.props.user !== null) {
+      this.intervalID = setInterval(() => {
+        this.props.onRefreshSession();
+      }, 20000);
+    }
+    if (prevProps.user !== null && this.props.user === null) {
+      clearInterval(this.intervalID);
+    }
+  }
   render() {
     return (
       <div className="user-toolbar">
+        {this.props.signUpResp && this.props.signUpResp.type === "success" && (
+          <ToastMessage
+            close={this.props.onSignUpCloseToastHandler}
+            type="positive"
+            title={`Hello ${this.props.signUpResp.message.fName}`}
+            description={`Welcome to Driblets! Let's save some water today! `}
+          />
+        )}
+        {this.props.showLogoutToast && (
+          <ToastMessage
+            close={this.props.onCloseLogoutToast}
+            type="positive"
+            title={`You have been successfully logged out`}
+          />
+        )}
         {this.props.user ? (
           <React.Fragment>
             {this.props.signInResp &&
@@ -21,15 +49,6 @@ class UserToolbar extends Component {
                   description={`Welcome back to Driblets! Let's save some water today! `}
                 />
               )}
-            {this.props.signUpResp &&
-              this.props.signUpResp.type === "success" && (
-                <ToastMessage
-                  close={this.props.onSignUpCloseToastHandler}
-                  type="positive"
-                  title={`Hello ${this.props.signUpResp.message.fName}`}
-                  description={`Welcome to Driblets! Let's save some water today! `}
-                />
-              )}
 
             <nav className="user-toolbar__item">
               <ul>
@@ -39,7 +58,7 @@ class UserToolbar extends Component {
                     className="user-toolbar__btn"
                     // onClick={this.props.onAuthUserHandler}
                   >
-                    Dashboard
+                    {this.props.user.fName}
                   </Button>
                 </li>
                 <li>
@@ -79,6 +98,7 @@ class UserToolbar extends Component {
 
 const mapStateToProps = (state) => {
   return {
+    showLogoutToast: state.auth.showLogoutToast,
     signInResp: state.auth.signInResp,
     signUpResp: state.auth.signUpResp,
     showAuthUserModal: state.auth.showAuthUserModal,
@@ -91,6 +111,8 @@ const mapDispatchToProps = (dispatch) => {
     onAuthUserHandler: () => dispatch(actions.authUserModalHandler()),
     onCloseToastHandler: () => dispatch(actions.resetSignInRespHandler()),
     onLogout: () => dispatch(actions.logout()),
+    onRefreshSession: () => dispatch(actions.refreshSessionHandler()),
+    onCloseLogoutToast: () => dispatch(actions.showLogoutToast(false)),
     onSignUpCloseToastHandler: () => dispatch(actions.resetSignUpRespHandler()),
   };
 };

@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { Provider } from "react-redux";
 import { createStore, applyMiddleware, compose, combineReducers } from "redux";
+import About from "./components/About/About";
 import authReducer from "./store/reducers/authReducer";
 import DoYourPart from "./components/DoYourPart/DoYourPart";
 import dypReducer from "./store/reducers/dypReducer";
@@ -34,6 +35,7 @@ function App() {
           <div className="main-wrapper">
             <Switch>
               <Route path="/" exact component={Home} />
+              <Route path="/about" exact component={About} />
               <Route path="/doyourpart" exact component={DoYourPart} />
             </Switch>
             <Footer />
