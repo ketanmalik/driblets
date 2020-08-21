@@ -55,6 +55,7 @@ module.exports = buildSchema(`
         logout: String
         refreshSession: AuthData!
         test: String
+        track(trackingId: String!): Report
         users: [User!]!
     }
 

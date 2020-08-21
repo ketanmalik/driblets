@@ -1,0 +1,64 @@
+.track-wrapper {
+  width: 90%;
+  margin: 5%;
+  padding-top: 2rem;
+}
+
+.ui.info.message.track-message-wrapper {
+  margin-bottom: 2rem;
+}
+
+.track-message-wrapper {
+  text-align: center;
+}
+
+.track-input {
+  width: 80%;
+  margin-left: 2.5%;
+}
+
+.ui.button.track-input__btn {
+  width: 13%;
+  margin-left: 2%;
+  background-color: #133d4d;
+  color: white !important;
+  border-radius: 20px;
+}
+
+.ui.button.track-input__btn:active,
+.ui.button.track-input__btn:focus {
+  background-color: #133d4d;
+}
+
+.ui.button.track-input__btn:hover {
+  background-color: #0e2d39 !important;
+}
+
+@media (min-width: 664px) and (max-width: 920px) {
+  .track-input {
+    width: 75%;
+  }
+  .ui.button.track-input__btn {
+    width: 18%;
+  }
+}
+
+@media (min-width: 520px) and (max-width: 663px) {
+  .track-input {
+    width: 70%;
+  }
+  .ui.button.track-input__btn {
+    width: 23%;
+  }
+}
+
+@media (max-width: 519px) {
+  .track-input {
+    margin-left: 5%;
+    width: 90%;
+  }
+  .ui.button.track-input__btn {
+    width: 40%;
+    margin: 2rem 0 0 25%;
+  }
+}
