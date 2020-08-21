@@ -128,10 +128,10 @@ export const signInHandler = (payload) => {
         return res.json();
       })
       .then((resData) => {
-        return dispatch(signInSuccessHandler(resData));
+        dispatch(signInSuccessHandler(resData));
       })
       .catch((err) => {
-        return dispatch(signInFailHandler(err));
+        dispatch(signInFailHandler(err));
       });
   };
 };
@@ -191,10 +191,10 @@ export const signUpHandler = (payload) => {
         return res.json();
       })
       .then((resData) => {
-        return dispatch(signUpSuccessHandler(resData));
+        dispatch(signUpSuccessHandler(resData));
       })
       .catch((err) => {
-        return dispatch(signUpFailHandler(err));
+        dispatch(signUpFailHandler(err));
       });
   };
 };

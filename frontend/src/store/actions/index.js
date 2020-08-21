@@ -3,6 +3,7 @@ export {
   addReportAddress,
   addReportDescription,
   addReportIntensity,
+  deleteLastReport,
   resetReport,
   resetReportError,
   showModalHandler,

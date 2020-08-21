@@ -21,6 +21,15 @@
   margin-bottom: 2rem;
 }
 
+.ui.negative.button.modal-close-btn {
+  background-color: #b3512c !important;
+}
+
+.ui.negative.button.modal-close-btn:hover,
+.ui.negative.button.modal-close-btn:active {
+  background-color: #8f402c !important;
+}
+
 @media (max-width: 750px) {
   .jumbotron-content {
     padding-left: 1rem;

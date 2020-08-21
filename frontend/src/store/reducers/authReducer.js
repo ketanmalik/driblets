@@ -96,7 +96,6 @@ const signUpSuccessHandler = (state, res) => {
     signUpResp["type"] = "error";
     signUpResp["message"] = res.errors[0].message;
   } else {
-    console.log(res);
     signUpResp["type"] = "success";
     signUpResp["message"] = {
       fName: res.data.createUser.fName,

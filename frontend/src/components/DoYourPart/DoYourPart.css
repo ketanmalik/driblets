@@ -31,6 +31,15 @@
   text-align: left;
 }
 
+.ui.positive.button.modal-positive-btn {
+  background-color: #133d4d !important;
+}
+
+.ui.positive.button.modal-positive-btn:hover,
+.ui.positive.button.modal-positive-btn:active {
+  background-color: #0e2d39 !important;
+}
+
 @media (min-width: 361px) and (max-width: 500px) {
   .dyp-wrapper .ui.breadcrumb .section {
     font-size: 15px;

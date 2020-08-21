@@ -137,10 +137,18 @@ class DoYourPart extends Component {
             {this.props.report.address}?
           </Modal.Content>
           <Modal.Actions>
-            <Button negative onClick={this.closeModal}>
+            <Button
+              className="modal-close-btn"
+              negative
+              onClick={this.closeModal}
+            >
               No
             </Button>
-            <Button positive onClick={this.addReportHandler}>
+            <Button
+              className="modal-positive-btn"
+              positive
+              onClick={this.addReportHandler}
+            >
               Yes
             </Button>
           </Modal.Actions>

@@ -1,6 +1,7 @@
 import * as actionTypes from "../actions/actionTypes";
 
 const initialState = {
+  lastSubmittedReport: null,
   report: {
     address: "",
     date: "",
@@ -28,6 +29,8 @@ const dypReducer = (state = initialState, action) => {
       return addReportDescription(state, action.description);
     case actionTypes.ADD_REPORT_INTENSITY:
       return addReportIntensity(state, action.intensity);
+    case actionTypes.DELETE_LAST_REPORT:
+      return { ...state, lastSubmittedReport: null, submitSuccess: false };
     case actionTypes.RESET_REPORT:
       return resetReport(state);
     case actionTypes.RESET_REPORT_ERROR:
@@ -38,6 +41,8 @@ const dypReducer = (state = initialState, action) => {
       return { ...state, startSubmit: true, reportError: false };
     case actionTypes.SUBMIT_REPORT_END:
       return submitReportEnd(state, action.mode);
+    case actionTypes.UPDATE_LAST_REPORT:
+      return updateLastReport(state, action.report);
     default:
       return state;
   }
@@ -99,6 +104,12 @@ const submitReportEnd = (state, mode) => {
     submitSuccess,
     showModal: false,
   };
+};
+
+const updateLastReport = (state, report) => {
+  let lastSubmittedReport = { ...state.lastSubmittedReport };
+  lastSubmittedReport = report;
+  return { ...state, lastSubmittedReport: lastSubmittedReport };
 };
 
 export default dypReducer;

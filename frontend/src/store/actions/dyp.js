@@ -59,7 +59,9 @@ export const addReport = (report) => {
             if (res.data && res.data.error) {
               throw { err: res.data.error };
             }
-            dispatch(submitReportToDb(report, res.data.addResults[0]));
+            dispatch(
+              submitReportToDb(report, res.data.addResults[0], respData)
+            );
           })
           .catch((error) => {
             dispatch(submitReportEndHandler("err"));
@@ -92,6 +94,36 @@ export const addReportIntensity = (intensity) => {
   };
 };
 
+export const deleteLastReport = () => {
+  return {
+    type: actionTypes.DELETE_LAST_REPORT,
+  };
+};
+
+export const deleteLastSubmittedReport = (id, token) => {
+  return async (dispatch) => {
+    let payload = {
+      f: "json",
+      token: token,
+      deletes: `[${id}]`,
+    };
+
+    let url =
+      "https://services5.arcgis.com/PJBXFilHiiwW6bPy/arcgis/rest/services/new_report/FeatureServer/0/applyEdits";
+
+    axios({
+      method: "POST",
+      url: url,
+      data: qs.stringify(payload),
+      headers: {
+        "content-type": "application/x-www-form-urlencoded;charset=utf-8",
+      },
+    })
+      .then((res) => dispatch(deleteLastReport()))
+      .catch((err) => console.log("err: ", err));
+  };
+};
+
 export const resetReport = () => {
   return { type: actionTypes.RESET_REPORT };
 };
@@ -119,9 +151,8 @@ export const submitReportEndHandler = (mode = "no_err") => {
   return { type: actionTypes.SUBMIT_REPORT_END, mode: mode };
 };
 
-export const submitReportToDb = (report, resp) => {
-  return (dispatch) => {
-    console.log("db", report, resp);
+export const submitReportToDb = (report, resp, token) => {
+  return async (dispatch) => {
     let date = report.date.toDateString();
     let objectId = resp.objectId.toString();
     let trackingId = resp.globalId + resp.objectId;
@@ -172,11 +203,19 @@ export const submitReportToDb = (report, resp) => {
         return res.json();
       })
       .then((resData) => {
-        console.log("success: ", resData);
-        return dispatch(submitReportEndHandler());
+        dispatch(updateLastSubmittedReport(resData.data.addReport));
+        dispatch(submitReportEndHandler());
       })
       .catch((err) => {
-        return dispatch(submitReportEndHandler("err"));
+        dispatch(deleteLastSubmittedReport(resp.objectId, token));
+        dispatch(submitReportEndHandler("err"));
       });
+  };
+};
+
+export const updateLastSubmittedReport = (report) => {
+  return {
+    type: actionTypes.UPDATE_LAST_REPORT,
+    report: report,
   };
 };
