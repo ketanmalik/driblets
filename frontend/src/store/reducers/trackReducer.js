@@ -14,7 +14,7 @@ const trackReducer = (state = initialState, action) => {
     case actionTypes.RESET_TRACK_REPORT:
       return resetTrackReport(state);
     case actionTypes.TRACK_REPORT_FAIL:
-      return { ...state, error: true, loading: false, report: null };
+      return { ...state, error: true, loading: false };
     case actionTypes.TRACK_REPORT_SUCCESS:
       return { ...state, error: false, loading: false, report: action.report };
     case actionTypes.TRACK_SEARCH_BAR_LOADING:

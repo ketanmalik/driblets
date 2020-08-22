@@ -80,6 +80,9 @@ class SignIn extends Component {
         )}
         <Form.Field error={this.state.errors.username} required>
           <label>Username</label>
+          <p style={{ color: "grey" }}>
+            (use <i>test@test.com</i> for demo purposes)
+          </p>
           <Input
             iconPosition="left"
             placeholder="Email"
@@ -93,6 +96,9 @@ class SignIn extends Component {
         </Form.Field>
         <Form.Field error={this.state.errors.password} required>
           <label>Password</label>
+          <p style={{ color: "grey" }}>
+            (use <i>driblets</i> for demo purposes)
+          </p>
           <Input
             onChange={(event, data) =>
               this.inputChangeHandler(data, "password")

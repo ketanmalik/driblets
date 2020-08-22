@@ -61,7 +61,7 @@ class UserToolbar extends Component {
 
             <nav className="user-toolbar__item">
               <ul>
-                <li>
+                {/* <li>
                   <Button
                     basic
                     className="user-toolbar__btn"
@@ -69,7 +69,7 @@ class UserToolbar extends Component {
                   >
                     {this.props.user.fName}
                   </Button>
-                </li>
+                </li> */}
                 <li>
                   <Button
                     basic

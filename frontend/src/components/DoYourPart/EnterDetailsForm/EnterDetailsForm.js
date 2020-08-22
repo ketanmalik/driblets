@@ -16,7 +16,7 @@ class EnterDetailsForm extends Component {
   };
 
   handleDescriptionChange = (e, { value }) => {
-    this.props.onAddReportDescription(value);
+    this.props.onAddReportDescription(value.replace(/\n/g, " "));
   };
 
   render() {
