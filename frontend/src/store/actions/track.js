@@ -56,7 +56,6 @@ export const trackReport = (id) => {
         if (resData.errors) {
           return dispatch(trackReportFail());
         }
-        console.log(resData.data.track);
         return dispatch(trackReportSuccess(resData.data.track));
       })
       .catch((err) => {

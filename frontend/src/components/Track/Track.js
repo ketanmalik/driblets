@@ -28,6 +28,7 @@ class Track extends Component {
     window.removeEventListener("resize", this.resizeHandler.bind(this));
   }
   resizeHandler = () => {
+    console.log(window.innerWidth, window.innerHeight);
     if (window.innerWidth >= 1511) {
       this.setState({ size: "small", vertical: false });
     } else if (window.innerWidth >= 1403 && window.innerWidth <= 1510) {
@@ -43,7 +44,6 @@ class Track extends Component {
     let data = [];
     let percent = null;
     if (this.props.report) {
-      console.log(this.props.report);
       switch (this.props.report.status) {
         case "Report Submitted":
           percent = 25;
@@ -185,6 +185,7 @@ class Track extends Component {
             </Grid>
           </Segment>
         )}
+        <div></div>
       </div>
     );
   }
