@@ -19,6 +19,7 @@ class Track extends Component {
     vertical: false,
   };
   componentDidMount() {
+    this.resizeHandler();
     window.addEventListener("resize", this.resizeHandler.bind(this));
 
     this.props.onResetTrackReport();
@@ -28,13 +29,10 @@ class Track extends Component {
     window.removeEventListener("resize", this.resizeHandler.bind(this));
   }
   resizeHandler = () => {
-    console.log(window.innerWidth, window.innerHeight);
-    if (window.innerWidth >= 1511) {
+    if (window.innerWidth >= 1561) {
       this.setState({ size: "small", vertical: false });
-    } else if (window.innerWidth >= 1403 && window.innerWidth <= 1510) {
+    } else if (window.innerWidth >= 1535 && window.innerWidth <= 1560) {
       this.setState({ size: "tiny", vertical: false });
-    } else if (window.innerWidth >= 1296 && window.innerWidth <= 1402) {
-      this.setState({ size: "mini", vertical: false });
     } else {
       this.setState({ size: "small", vertical: true });
     }
