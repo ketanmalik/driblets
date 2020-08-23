@@ -68,6 +68,7 @@
   margin-left: 35%;
   background-color: #133d4d;
   color: white;
+  border-radius: 20px;
 }
 
 .modal-content .ui.button.modal-content__btn:hover {

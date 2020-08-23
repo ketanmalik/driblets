@@ -11,6 +11,7 @@ import {
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions/index";
+import axios from "axios";
 import Btn from "../UI/Button/Btn";
 import EnterDetailsForm from "./EnterDetailsForm/EnterDetailsForm";
 import WebMap from "../UI/WebMap/WebMap";
@@ -59,7 +60,43 @@ class DoYourPart extends Component {
       });
       return;
     }
-    this.props.onShowModalHandler(true);
+
+    let payload = {
+      f: "json",
+      singleLine: `"${this.props.report.address}"`,
+      outFields: "Country",
+      maxLocations: 1,
+    };
+
+    let url =
+      "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates";
+
+    axios
+      .get(url, {
+        params: payload,
+      })
+      .then((resp) => {
+        let country = resp.data.candidates[0].attributes.Country;
+        if (country !== "USA") {
+          this.setState({
+            showErrToastMsg: true,
+            toastTitle: "Out of range",
+            toastDescription:
+              "We're sorry, this address is out of our range of operation.",
+          });
+          return;
+        }
+        this.props.onShowModalHandler(true);
+      })
+      .catch((err) => {
+        this.setState({
+          showErrToastMsg: true,
+          toastTitle: "Network Error",
+          toastDescription:
+            "We cannot verify the address you provided. Please try again after some time.",
+        });
+        return;
+      });
   };
 
   render() {

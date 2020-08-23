@@ -38,6 +38,15 @@ class UserToolbar extends Component {
             title={`You have been successfully logged out`}
           />
         )}
+        {this.props.trackError && (
+          <ToastMessage
+            close={this.props.onResetTrackIdError}
+            description="Please ensure you've entered a correct tracking id and try again"
+            title="Invalid Tracking ID"
+            type="negative"
+          />
+        )}
+
         {this.props.user ? (
           <React.Fragment>
             {this.props.signInResp &&
@@ -52,7 +61,7 @@ class UserToolbar extends Component {
 
             <nav className="user-toolbar__item">
               <ul>
-                <li>
+                {/* <li>
                   <Button
                     basic
                     className="user-toolbar__btn"
@@ -60,7 +69,7 @@ class UserToolbar extends Component {
                   >
                     {this.props.user.fName}
                   </Button>
-                </li>
+                </li> */}
                 <li>
                   <Button
                     basic
@@ -102,6 +111,7 @@ const mapStateToProps = (state) => {
     signInResp: state.auth.signInResp,
     signUpResp: state.auth.signUpResp,
     showAuthUserModal: state.auth.showAuthUserModal,
+    trackError: state.track.error,
     user: state.auth.user,
   };
 };
@@ -112,6 +122,7 @@ const mapDispatchToProps = (dispatch) => {
     onCloseToastHandler: () => dispatch(actions.resetSignInRespHandler()),
     onLogout: () => dispatch(actions.logout()),
     onRefreshSession: () => dispatch(actions.refreshSessionHandler()),
+    onResetTrackIdError: () => dispatch(actions.resetTrackIdError()),
     onCloseLogoutToast: () => dispatch(actions.showLogoutToast(false)),
     onSignUpCloseToastHandler: () => dispatch(actions.resetSignUpRespHandler()),
   };
