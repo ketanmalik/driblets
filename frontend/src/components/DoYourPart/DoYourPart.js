@@ -131,7 +131,7 @@ class DoYourPart extends Component {
         <Message info>
           <Message.Header>You are currently not logged in</Message.Header>
           <p>
-            We're sorry but this feature is avalaible only to registered users.
+            We're sorry but this feature is available only to registered users.
           </p>
           <p>Please sign up / login to report a water wastage incident.</p>
         </Message>
