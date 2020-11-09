@@ -41,8 +41,6 @@ mongoose
     `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0.gmgko.mongodb.net/driblets?retryWrites=true&w=majority`
   )
   .then(() => {
-    console.log(process.env.MONGO_USER);
-    console.log(process.env.MONGO_PASSWORD);
     if (process.env.NODE_ENV === "production") {
       app.use(express.static('frontend/build'));
       app.get('*', (request, response) => {
