@@ -61,15 +61,6 @@ class UserToolbar extends Component {
 
             <nav className="user-toolbar__item">
               <ul>
-                {/* <li>
-                  <Button
-                    basic
-                    className="user-toolbar__btn"
-                    // onClick={this.props.onAuthUserHandler}
-                  >
-                    {this.props.user.fName}
-                  </Button>
-                </li> */}
                 <li>
                   <Button
                     basic

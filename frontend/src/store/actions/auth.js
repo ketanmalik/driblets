@@ -74,7 +74,7 @@ export const refreshSessionHandler = () => {
         return dispatch(updateRefreshedUser(resData));
       })
       .catch((err) => {
-        console.log("refresh failed: ", err);
+        // console.log("refresh failed: ", err);
       });
   };
 };
