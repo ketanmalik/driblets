@@ -1,7 +1,7 @@
 {
   "env": {
-    "MONGO_USER": "ketan",
+    "MONGO_USER": "heroku_n79lfqmw",
     "MONGO_PASSWORD": "ketanmalik",
-    "MONGO_DB": "driblets"
+    "MONGO_DB": "heroku_n79lfqmw"
   }
 }
