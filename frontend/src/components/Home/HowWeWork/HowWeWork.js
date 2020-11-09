@@ -11,18 +11,17 @@ const howWeWork = (props) => {
   const descriptions = [
     <div>
       <p>
-        Visit <i>Do Your Part</i> and search for the address where water leakage
+        Visit <i>Do Your Part</i> and search for the address or click on the map where water leakage
         is present
       </p>
       <p>
-        Use <i>Add Feature</i> to put a pin at the specified location and
-        provide description & intensity of the incident
+        We'll put a pin at the nearest known location of the incident
       </p>
     </div>,
     <div>
       <p>
         Provide & Verify additional details such as contact information and
-        nature of the incident you want to report
+        intensity of the incident you want to report
       </p>
     </div>,
     <div>

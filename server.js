@@ -41,6 +41,12 @@ mongoose
     `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0.gmgko.mongodb.net/driblets?retryWrites=true&w=majority`
   )
   .then(() => {
+    if (process.env.NODE_ENV === "production") {
+      app.use(express.static('frontend/build'));
+      app.get('*', (request, response) => {
+        response.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'));
+      });
+    }
     app.listen(PORT);
     console.log("mongoose connected!!");
   })
