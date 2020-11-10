@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import {
   Button,
   Dimmer,
-  Divider,
   Grid,
   Header,
   Loader,
@@ -22,20 +21,6 @@ class AuthUserModal extends Component {
 
   backdropClickHandler = () => {
     this.setState({ showSignUpForm: false }, this.props.onCloseModalHandler);
-  };
-
-  componentDidMount = () => {
-    window.addEventListener("resize", this.resizeHandler.bind(this));
-  };
-
-  componentWillUnmount = () => {
-    window.removeEventListener("resize", this.resizeHandler.bind(this));
-  };
-
-  resizeHandler = () => {
-    if (window.innerWidth > 750) {
-      this.setState({ showSignUpForm: false });
-    }
   };
 
   showSignUpFormHandler = () => {
@@ -62,30 +47,21 @@ class AuthUserModal extends Component {
                       {this.state.showSignUpForm ? "Sign Up" : "Log In"}
                     </Header>
                     {this.state.showSignUpForm ? (
-                      <SignUp />
+                      <SignUp goBackHandler={() => this.setState({ showSignUpForm: false })} />
                     ) : (
-                      <React.Fragment>
-                        <div className="modal-content__mobile-only">
-                          New User?
+                        <React.Fragment>
+                          <div className="modal-content__mobile-only">
+                            New User?
                           <Button
-                            className="mobile-only-btn"
-                            onClick={this.showSignUpFormHandler}
-                          >
-                            <i>Create an account</i>
-                          </Button>
-                        </div>
-                        <SignIn />
-                      </React.Fragment>
-                    )}
-                  </Grid.Column>
-                </Grid.Row>
-                <Divider className="modal-content__desktop-only" horizontal>
-                  Or
-                </Divider>
-                <Grid.Row className="modal-content__desktop-only">
-                  <Grid.Column>
-                    <Header className="modal-content__header">Sign Up</Header>
-                    <SignUp />
+                              className="mobile-only-btn"
+                              onClick={this.showSignUpFormHandler}
+                            >
+                              <i>Create an account</i>
+                            </Button>
+                          </div>
+                          <SignIn />
+                        </React.Fragment>
+                      )}
                   </Grid.Column>
                 </Grid.Row>
               </Grid>

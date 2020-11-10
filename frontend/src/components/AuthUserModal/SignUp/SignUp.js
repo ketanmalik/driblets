@@ -173,9 +173,14 @@ class SignUp extends Component {
             <input />
           </Input>
         </Form.Field>
-        <Button type="submit" className="modal-content__btn">
-          Sign Up
-        </Button>
+        <div className="modal-content__btns">
+          <Button className="modal-content__btn go-back" onClick={this.props.goBackHandler}>
+            Go Back
+          </Button>
+          <Button type="submit" className="modal-content__btn sign-up">
+            Sign Up
+          </Button>
+        </div>
       </Form>
     );
   }
